@@ -15,8 +15,8 @@ public class ElectionBoard {
 	
 	private ElectionBoard() {
 		try {
-			File myFile = new File("voters.txt");
-			Scanner inFile = new Scanner(myFile);
+			// File myFile = new File("voters.txt");
+			Scanner inFile = new Scanner(new File("voters.text"));
 
 			String line;
 			String [] data;
@@ -25,12 +25,12 @@ public class ElectionBoard {
 			voters = new ArrayList<String>();
 			voterStatus = new Hashtable<String, Boolean>();
 
-			while(inFile.hasNext()) {
-				line = inFile.nextLine();
-				System.out.println(line);
-				
+			while(inFile.hasNext())
+			{
+				line = inFile.nextLine();				
 				data = line.split(" ");
 				String newName = data[0] + " " + data[1];
+				
 				ElectionBoard.voters.add(newName);
 				ElectionBoard.voterStatus.put(newName, false);
 			}
