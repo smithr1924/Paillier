@@ -6,7 +6,8 @@ import java.util.Scanner;
 public class ElectionBoard {
 	private static final ElectionBoard instance = new ElectionBoard();
 	
-	// Somehow has a list of registered voters already, is that an argument passed in when the program starts?
+	// Somehow has a list of registered voters already, is that an
+	// argument passed in when the program starts?
 	private static ArrayList<String> voters = new ArrayList<String>();
 	private static Dictionary<String, Boolean> voterStatus = new Hashtable<String, Boolean>();
 	
@@ -34,7 +35,8 @@ public class ElectionBoard {
 		return instance;
 	}
 	
-	// Sets voter status to false to indicate no one has voted yet if the dictionary hasn't yet been filled
+	// Sets voter status to false to indicate no one has voted yet if the
+	// dictionary hasn't yet been filled.
 	public static void initializeVoters()
 	{
 		if (voterStatus.isEmpty())
