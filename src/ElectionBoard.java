@@ -2,17 +2,17 @@ import java.math.*;
 import java.util.*;
 
 // Singleton election board class
-public class EM {
-	private static final EM instance = new EM();
+public class ElectionBoard {
+	private static final ElectionBoard instance = new ElectionBoard();
 	
 	// Somehow has a list of registered voters already, is that an argument passed in when the program starts?
 	private static ArrayList<String> voters = new ArrayList<String>();
 	private static Dictionary<String, Boolean> voterStatus = new Hashtable<String, Boolean>();
 	
-	private EM() {}
+	private ElectionBoard() {}
 	
 	// Returns the EM instance to be used where this class is needed
-	public static EM getInstance()
+	public static ElectionBoard getInstance()
 	{
 		return instance;
 	}
