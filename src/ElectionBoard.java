@@ -1,5 +1,6 @@
 import java.math.*;
 import java.util.*;
+import java.util.Scanner;
 
 // Singleton election board class
 public class ElectionBoard {
@@ -9,7 +10,23 @@ public class ElectionBoard {
 	private static ArrayList<String> voters = new ArrayList<String>();
 	private static Dictionary<String, Boolean> voterStatus = new Hashtable<String, Boolean>();
 	
-	private ElectionBoard() {}
+	private ElectionBoard() {
+		try {
+			Scanner inFile = new Scanner(new File("voters.txt"));
+
+			String line;
+			String [] data;
+
+			while(inFile.hasNext()) {
+				line = inFile.nextLine();
+				// data = line.split(" ")
+				voters.add(line);
+				voterStatus.put(line, false)
+			}
+		} catch (Exception e) {
+			System.out.println("error reading in file: " + e);
+		}
+	}
 	
 	// Returns the EM instance to be used where this class is needed
 	public static ElectionBoard getInstance()
