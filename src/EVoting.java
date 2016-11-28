@@ -81,12 +81,12 @@ public class EVoting
 	// the Election Board.
 	public static void getVoteBlindSigned()
 	{
-
+		
 	}
 
 	public static void zkp()
 	{
-
+		
 	}
 
 	public static void main(String[] args)
