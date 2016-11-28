@@ -36,13 +36,13 @@ public class EVoting
 
 	// Menu with buttons containing candidate names. Returns the
 	// user's input
-	public static int candidateMenu(String[] candidates, int size)
+	public static int candidateMenu(String[] candidates)
 	{
 		// String[] encrypt = {"Print", "Encrypt1", "Decrypt1", "Encrypt2",
 		// 		"Decrypt2", "Exit"};
 		int input = (JOptionPane.showOptionDialog(null, 
 			"Vote for whom?", "Print",
-			0, size, null, candidates, null));
+			0, 3, null, candidates, null));
 		return input;
 	}
 
