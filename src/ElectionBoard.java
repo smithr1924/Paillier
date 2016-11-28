@@ -1,7 +1,6 @@
 import java.io.File;
 import java.math.*;
 import java.util.*;
-import java.util.Scanner;
 
 // Singleton election board class
 public class ElectionBoard {
@@ -10,8 +9,7 @@ public class ElectionBoard {
 	// Somehow has a list of registered voters already, is that an
 	// argument passed in when the program starts?
 	private static List<String> candidates;
-	private static List<String> voters;
-	private static Dictionary<String, Boolean> voterStatus;
+	private static List<Voter> voters;
 	private static Paillier encrypt = new Paillier();
 	
 	private ElectionBoard() {
@@ -22,15 +20,13 @@ public class ElectionBoard {
 			String line;
 
 			candidates = new ArrayList<String>();
-			voters = new ArrayList<String>();
-			voterStatus = new Hashtable<String, Boolean>();
+			voters = new ArrayList<Voter>();
 
 			while(inFile.hasNext())
 			{
 				line = inFile.nextLine();				
 				
-				voters.add(line);
-				voterStatus.put(line, false);
+				voters.add(new Voter(line, voters.size()));
 			}
 			
 			inFile.close();
@@ -86,16 +82,16 @@ public class ElectionBoard {
 	//				else, do nothing.
 	// Returns:		null if the voter has already voted
 	//				otherwise, a signed vote array
-	public static BigInteger[] receiveVote(String voter, BigInteger[] vote)
+	public static BigInteger[] receiveVote(Voter voter, BigInteger[] vote)
 	{
-		if (voterStatus.get(voter))
+		if (voter.getVoteStatus())
 		{
 			// Voter already voted once
 			System.out.println("Voter " + voter + " has already voted!");
 			return null;
 		}
 		
-		voterStatus.put(voter, true);
+		voter.didVote();
 		
 		BigInteger[] answer = new BigInteger[ElectionBoard.numCandidates()];
 		

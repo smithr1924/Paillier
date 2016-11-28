@@ -1,24 +1,33 @@
+import java.util.*;
+
 public class Voter
 {
 	private String name;
 	private int id;
+	private Boolean didVote = false;
 
-	public Voter() {
-
+	public Voter(String name, int id) {
+		this.name = name;
+		this.id = id;
 	}
 
-	public Voter(String n)
+	public String getName()
 	{
-		name = n;
+		return new String(name);
 	}
 
-	public static String getName()
+	public int getID()
 	{
-		return name;
+		return new Integer(id).intValue();
 	}
-
-	public static int getID()
+	
+	public Boolean getVoteStatus()
 	{
-		return id;
+		return new Boolean(didVote);
+	}
+	
+	public void didVote()
+	{
+		didVote = true;
 	}
 }
