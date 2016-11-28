@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
-
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
@@ -100,8 +99,9 @@ public class EVoting
 
 	public static void main(String[] args)
 	{
-		// changeJOP();
-		// This stuff will have to be in a while loop of some sort 
+		// changeJOP(); // Uncomment this to enforce the colors/fonts
+		
+		// Repeat the login screen as often as necessary
 		int choice = startMenu();
 		while(choice != 2)
 		{
