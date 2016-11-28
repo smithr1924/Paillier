@@ -1,3 +1,4 @@
+import java.io.File;
 import java.math.*;
 import java.util.*;
 import java.util.Scanner;
@@ -8,24 +9,49 @@ public class ElectionBoard {
 	
 	// Somehow has a list of registered voters already, is that an
 	// argument passed in when the program starts?
+	private static ArrayList<String> candidates = new ArrayList<String>();
 	private static ArrayList<String> voters = new ArrayList<String>();
 	private static Dictionary<String, Boolean> voterStatus = new Hashtable<String, Boolean>();
 	
 	private ElectionBoard() {
 		try {
-			Scanner inFile = new Scanner(new File("voters.txt"));
+			File myFile = new File("voters.txt");
+			Scanner inFile = new Scanner(myFile);
 
 			String line;
-			String [] data;
+			// String [] data;
+
+			while(inFile.hasNext()) {
+				line = inFile.nextLine();
+				System.out.println(line);
+				// data = line.split(" ")
+				voters.add(line);
+				voterStatus.put(line, false);
+			}
+			
+			inFile.close();
+			
+		} catch (Exception e) {
+			System.out.println("error reading in file 'voters.txt': " + e);
+		}
+		
+		try {
+			Scanner inFile = new Scanner(new File("Candidates.txt"));
+
+			String line;
+			// String [] data;
 
 			while(inFile.hasNext()) {
 				line = inFile.nextLine();
 				// data = line.split(" ")
 				voters.add(line);
-				voterStatus.put(line, false)
+				voterStatus.put(line, false);
 			}
+			
+			inFile.close();
+			
 		} catch (Exception e) {
-			System.out.println("error reading in file: " + e);
+			System.out.println("error reading in file 'candidates.txt': " + e);
 		}
 	}
 	
@@ -48,6 +74,16 @@ public class ElectionBoard {
 		}
 	}
 	
+	public int numVoters()
+	{
+		return voters.size();
+	}
+	
+	public int numCandidates()
+	{
+		return candidates.size();
+	}
+	
 	// Receives a vote to be counted
 	// Params:		voter is an object indicating who voted
 	//				votes is an encrypted array of voter's votes (cleartext = [0,0,1,0])
@@ -55,14 +91,14 @@ public class ElectionBoard {
 	// Effects:		if voter hasn't voted, value for key 'voter' in voterStatus changed to true
 	//				else, do nothing.
 	// Returns:		
-	public static Object receiveVote(Object voter, ArrayList<BigInteger> votes)
-	{
-		if (voterStatus.get(voter))
-		{
-			// Voter already voted once
-			return
-		}
-		
-		
-	}
+//	public static Object receiveVote(Object voter, ArrayList<BigInteger> votes)
+//	{
+//		if (voterStatus.get(voter))
+//		{
+//			// Voter already voted once
+//			return
+//		}
+//		
+//		
+//	}
 }
