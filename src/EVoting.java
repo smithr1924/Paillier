@@ -35,6 +35,8 @@ public class EVoting
 		return input;
 	}
 
+	// Menu with buttons containing candidate names. Returns the
+	// user's input
 	public static int candidateMenu(String[] candidates, int size)
 	{
 		// String[] encrypt = {"Print", "Encrypt1", "Decrypt1", "Encrypt2",
@@ -45,15 +47,18 @@ public class EVoting
 		return input;
 	}
 
+	// Menu that appears at the start, allowing logins or
+	// viewing of the final election results.
 	public static int startMenu()
 	{
-		String[] menu = {"Login and vote", "End the poll", "Exit"}
+		String[] menu = {"Login and vote", "End the poll", "Exit"};
 		int input = (JOptionPane.showOptionDialog(null, 
 			"What would you like to do?", "Print",
 			0, 3, null, candidates, null));
 		return input;
 	}
 
+	// Menu that allows the user to input their name and vote
 	public static void login()
 	{
 		String a = JOptionPane.showInputDialog("What is your voter name?");
@@ -67,21 +72,41 @@ public class EVoting
 	public static void vote()
 	{
 		int vote = candidateMenu(candidates, numCandidates);
+
+		// Process the vote
+		getVoteBlindSigned();
+	}
+
+	// Take the user's vote and have it blindly signed by
+	// the Election Board.
+	public static void getVoteBlindSigned()
+	{
+
+	}
+
+	public static void zkp()
+	{
+
 	}
 
 	public static void main(String[] args)
 	{
 		// changeJOP();
 		// This stuff will have to be in a while loop of some sort 
-		int choice = startMenu()
+		int choice = startMenu();
 		while(choice != 2)
 		{
 			switch(choice)
 			{
-				case 0: login()
+				case 0: login();
 				case 1: // force the final tally
 			}
 			choice = menu();
 		}
+
+		// force the final tally somehow, print election results to
+		// the console
+
+		// allow user to verify that their vote was obtained correctly
 	}
 }
