@@ -12,14 +12,14 @@ public class ElectionBoard {
 	private static List<String> candidates;
 	private static List<String> voters;
 	private static Dictionary<String, Boolean> voterStatus;
+	private static Paillier encrypt = new Paillier();
 	
 	private ElectionBoard() {
 		try {
 			// File myFile = new File("voters.txt");
-			Scanner inFile = new Scanner(new File("voters.text"));
+			Scanner inFile = new Scanner(new File("voters.txt"));
 
 			String line;
-			String [] data;
 
 			candidates = new ArrayList<String>();
 			voters = new ArrayList<String>();
@@ -27,12 +27,10 @@ public class ElectionBoard {
 
 			while(inFile.hasNext())
 			{
-				line = inFile.nextLine();
-				data = line.split(" ");
-				String newName = data[0] + " " + data[1];
+				line = inFile.nextLine();				
 				
-				ElectionBoard.voters.add(newName);
-				ElectionBoard.voterStatus.put(newName, false);
+				voters.add(line);
+				voterStatus.put(line, false);
 			}
 			
 			inFile.close();
@@ -45,13 +43,11 @@ public class ElectionBoard {
 			Scanner inFile = new Scanner(new File("Candidates.txt"));
 
 			String line;
-			// String [] data;
 
 			while(inFile.hasNext()) {
 				line = inFile.nextLine();
-				// data = line.split(" ")
-				voters.add(line);
-				voterStatus.put(line, false);
+				
+				candidates.add(line);
 			}
 			
 			inFile.close();
@@ -67,44 +63,59 @@ public class ElectionBoard {
 		return instance;
 	}
 	
-	// Sets voter status to false to indicate no one has voted yet if the
-	// dictionary hasn't yet been filled.
-	public static void initializeVoters()
-	{
-		if (voterStatus.isEmpty())
-		{
-			for (int i = 0; i < voters.size(); i++)
-			{
-				voterStatus.put(voters.get(i), false);
-			}
-		}
-	}
-	
-	public int numVoters()
+	public static int numVoters()
 	{
 		return voters.size();
 	}
 	
-	public int numCandidates()
+	public static int numCandidates()
 	{
 		return candidates.size();
 	}
 	
+	public static List<String> getCandidates()
+	{
+		return Collections.unmodifiableList(candidates);
+	}
+	
 	// Receives a vote to be counted
 	// Params:		voter is an object indicating who voted
-	//				votes is an encrypted array of voter's votes (cleartext = [0,0,1,0])
+	//				vote is an encrypted array of voter's votes (cleartext = [0,0,1,0])
 	// Modifies:	voterStatus
 	// Effects:		if voter hasn't voted, value for key 'voter' in voterStatus changed to true
 	//				else, do nothing.
-	// Returns:		
-//	public static Object receiveVote(Object voter, ArrayList<BigInteger> votes)
-//	{
-//		if (voterStatus.get(voter))
-//		{
-//			// Voter already voted once
-//			return
-//		}
-//		
-//		
-//	}
+	// Returns:		null if the voter has already voted
+	//				otherwise, a signed vote array
+	public static BigInteger[] receiveVote(String voter, BigInteger[] vote)
+	{
+		if (voterStatus.get(voter))
+		{
+			// Voter already voted once
+			System.out.println("Voter " + voter + " has already voted!");
+			return null;
+		}
+		
+		voterStatus.put(voter, true);
+		
+		BigInteger[] answer = new BigInteger[ElectionBoard.numCandidates()];
+		
+		for (int i = 0; i < vote.length; i++)
+		{
+			answer[i] = encrypt.Encryption(vote[i]);
+		}
+		return answer;
+	}
+	
+	// Receive encrypted tallies of votes, decrypt and announce
+	// Params:		votes is an array of BigIntegers representing the tallied votes for each candidate.
+	//					votes[0] is the first candidates tally and so on.
+	public static void tallyVotes(BigInteger[] votes)
+	{
+		BigInteger[] answer = new BigInteger[numCandidates()];
+		
+		for (int i = 0; i < numCandidates(); i++)
+		{
+			answer[i] = encrypt.Decryption(votes[i]);
+		}
+	}
 }
