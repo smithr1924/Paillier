@@ -27,7 +27,7 @@ public class ElectionBoard {
 
 			while(inFile.hasNext())
 			{
-				line = inFile.nextLine();				
+				line = inFile.nextLine();
 				data = line.split(" ");
 				String newName = data[0] + " " + data[1];
 				
