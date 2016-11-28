@@ -73,22 +73,22 @@ public class Paillier {
      * @param certainty The probability that the new BigInteger represents a prime number will exceed (1 - 2^(-certainty)). The execution time of this constructor is proportional to the value of this parameter.
      */
     public void KeyGeneration(int bitLengthVal, int certainty) {
-        bitLength = bitLengthVal;
-        /*Constructs two randomly generated positive BigIntegers that are probably prime, with the specified bitLength and certainty.*/
-        p = new BigInteger(bitLength / 2, certainty, new Random());
-        q = new BigInteger(bitLength / 2, certainty, new Random());
-
-        n = p.multiply(q);
-        nsquare = n.multiply(n);
-
-        g = new BigInteger("2");
-        lambda = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE)).divide(
-                p.subtract(BigInteger.ONE).gcd(q.subtract(BigInteger.ONE)));
-        /* check whether g is good.*/
-        if (g.modPow(lambda, nsquare).subtract(BigInteger.ONE).divide(n).gcd(n).intValue() != 1) {
-            System.out.println("g is not good. Choose g again.");
-            System.exit(1);
+        do {
+	    	bitLength = bitLengthVal;
+	        /*Constructs two randomly generated positive BigIntegers that are probably prime, with the specified bitLength and certainty.*/
+	        p = new BigInteger(bitLength / 2, certainty, new Random());
+	        q = new BigInteger(bitLength / 2, certainty, new Random());
+	
+	        n = p.multiply(q);
+	        nsquare = n.multiply(n);
+	        
+	        g = n.add(BigInteger.ONE);
+	//        g = new BigInteger("2");
+	        lambda = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE)).divide(
+	                p.subtract(BigInteger.ONE).gcd(q.subtract(BigInteger.ONE)));
+	        /* check whether g is good.*/
         }
+        while (g.modPow(lambda, nsquare).subtract(BigInteger.ONE).divide(n).gcd(n).intValue() != 1);
     }
 
     /**

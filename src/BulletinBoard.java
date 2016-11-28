@@ -8,12 +8,20 @@ public class BulletinBoard {
 	
 	private BulletinBoard() 
 	{
-		int n = 
-		matrix = new BigInteger[n][m]();
+		int m = ElectionBoard.numCandidates();
+		int n = ElectionBoard.numVoters();
+		matrix = new BigInteger[n][m];
 	}
 	
 	public static BulletinBoard getInstance()
 	{
 		return instance;
 	}
+	
+	public static void receiveVote(int voter, BigInteger[] vote)
+	{
+		
+	}
+	
+	public static 
 }
