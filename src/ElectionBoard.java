@@ -24,9 +24,12 @@ public class ElectionBoard {
 			while(inFile.hasNext()) {
 				line = inFile.nextLine();
 				System.out.println(line);
-				// data = line.split(" ")
-				voters.add(line);
-				voterStatus.put(line, false);
+				
+				data = line.split(" ")
+				String newName = data[0] + " " + data[1];
+				System.out.println(newName);
+				voters.add(newName);
+				voterStatus.put(newName, false);
 			}
 			
 			inFile.close();
