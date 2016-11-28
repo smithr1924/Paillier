@@ -9,9 +9,9 @@ public class ElectionBoard {
 	
 	// Somehow has a list of registered voters already, is that an
 	// argument passed in when the program starts?
-	private static ArrayList<String> candidates = new ArrayList<String>();
-	private static ArrayList<String> voters = new ArrayList<String>();
-	private static Dictionary<String, Boolean> voterStatus = new Hashtable<String, Boolean>();
+	private static List<String> candidates;
+	private static List<String> voters;
+	private static Dictionary<String, Boolean> voterStatus;
 	
 	private ElectionBoard() {
 		try {
@@ -19,17 +19,20 @@ public class ElectionBoard {
 			Scanner inFile = new Scanner(myFile);
 
 			String line;
-			// String [] data;
+			String [] data;
+
+			candidates = new ArrayList<String>();
+			voters = new ArrayList<String>();
+			voterStatus = new Hashtable<String, Boolean>();
 
 			while(inFile.hasNext()) {
 				line = inFile.nextLine();
 				System.out.println(line);
 				
-				data = line.split(" ")
+				data = line.split(" ");
 				String newName = data[0] + " " + data[1];
-				System.out.println(newName);
-				voters.add(newName);
-				voterStatus.put(newName, false);
+				ElectionBoard.voters.add(newName);
+				ElectionBoard.voterStatus.put(newName, false);
 			}
 			
 			inFile.close();
