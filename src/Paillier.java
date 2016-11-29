@@ -86,8 +86,8 @@ public class Paillier {
 	//        g = new BigInteger("2");
 	        lambda = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE)).divide(
 	                p.subtract(BigInteger.ONE).gcd(q.subtract(BigInteger.ONE)));
-	        /* check whether g is good.*/
         }
+        /* check whether g is good.*/
         while (g.modPow(lambda, nsquare).subtract(BigInteger.ONE).divide(n).gcd(n).intValue() != 1);
     }
 

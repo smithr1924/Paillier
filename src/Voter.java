@@ -1,14 +1,25 @@
-import java.util.*;
+import java.math.*;
 
 public class Voter
 {
+	private static int numVoters = 0;
 	private String name;
 	private int id;
 	private Boolean didVote = false;
+	private BigInteger[] vote = new BigInteger[ElectionBoard.numCandidates()];
 
-	public Voter(String name, int id) {
+	// Initializer for the class
+	// Params		name is the name of the voter
+	//				id is a unique number assigned to this voter
+	public Voter(String name) {
+		if (numVoters >= ElectionBoard.numVoters())
+		{
+			throw new SecurityException("Maximum number of voters already reached");
+		}
+		
 		this.name = name;
-		this.id = id;
+		this.id = numVoters;
+		numVoters++;
 	}
 
 	public String getName()
@@ -26,8 +37,22 @@ public class Voter
 		return new Boolean(didVote);
 	}
 	
-	public void didVote()
+	public BigInteger[] getVote()
 	{
-		didVote = true;
+		return vote.clone(); 
+	}
+	
+	public void didVote(BigInteger[] encryptedVote)
+	{
+		if (!didVote)
+		{
+			didVote = true;
+			vote = encryptedVote.clone();
+		}
+		
+		else
+		{
+			throw new SecurityException("User "+name+" has already voted");
+		}
 	}
 }

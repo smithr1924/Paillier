@@ -100,6 +100,9 @@ public class EVoting
 	public static void main(String[] args)
 	{
 		// changeJOP(); // Uncomment this to enforce the colors/fonts
+
+		ElectionBoard EB = ElectionBoard.getInstance();
+		BulletinBoard BB = BulletinBoard.getInstance();
 		
 		// Repeat the login screen as often as necessary
 		int choice = startMenu();

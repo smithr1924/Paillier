@@ -26,7 +26,7 @@ public class ElectionBoard {
 			{
 				line = inFile.nextLine();				
 				
-				voters.add(new Voter(line, voters.size()));
+				voters.add(new Voter(line));
 			}
 			
 			inFile.close();
@@ -91,8 +91,7 @@ public class ElectionBoard {
 			return null;
 		}
 		
-		voter.didVote();
-		
+		voter.didVote(vote);
 		BigInteger[] answer = new BigInteger[ElectionBoard.numCandidates()];
 		
 		for (int i = 0; i < vote.length; i++)
