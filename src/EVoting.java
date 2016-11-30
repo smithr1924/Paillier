@@ -6,12 +6,17 @@ import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
 public class EVoting
 {
+//	private static ElectionBoard EB = ElectionBoard.getInstance();
+//	private static BulletinBoard BB = BulletinBoard.getInstance();
+	
 	// Function to change the look of the popup windows
 	public static void changeJOP()
 	{
@@ -59,12 +64,12 @@ public class EVoting
 
 	// Menu that appears at the start, allowing logins or
 	// viewing of the final election results.
-	public static int startMenu(String[] candidates)
+	public static int startMenu()
 	{
 		String[] menu = {"Login and vote", "End the poll", "Exit"};
 		int input = (JOptionPane.showOptionDialog(null, 
 			"What would you like to do?", "Print",
-			0, 3, null, candidates, null));
+			0, 3, null, menu, null));
 		return input;
 	}
 
@@ -101,10 +106,10 @@ public class EVoting
 	}
 
 	// Show message dialog containing the results of the election.
-	public static void displayElectionResults(BigInteger results)
+	public static void displayElectionResults(BigInteger results, ElectionBoard EB)
 	{
 		String display = "";
-		List<String> candidates = ElectionBoard.getCandidates();
+		List<String> candidates = EB.getCandidates();
 		String tally = results.toString();
 
 		for(int i = 0; i < candidates.size(); i++)
@@ -118,11 +123,24 @@ public class EVoting
 
 	public static void main(String[] args)
 	{
-		// changeJOP(); // Uncomment this to enforce the colors/fonts
+		changeJOP(); // Uncomment this to enforce the colors/fonts
 		
+		System.out.println("pls");
+		ElectionBoard EB = ElectionBoard.getInstance();
 		// Repeat the login screen as often as necessary
-		String[] candidates = (String[]) ElectionBoard.getCandidates().toArray();
-		int choice = startMenu(candidates);
+		
+		try {
+			TimeUnit.SECONDS.sleep(2);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Num candidates: ");
+		System.out.println(EB.numCandidates());
+		String[] candidates = new String[EB.numCandidates()];
+		candidates = EB.getCandidates().toArray(candidates);
+		System.out.println("sdfksdjf");
+		int choice = startMenu();
 		while(choice != 2)
 		{
 			switch(choice)
@@ -130,7 +148,7 @@ public class EVoting
 				case 0: login(candidates);
 				case 1: // force the final tally
 			}
-			choice = startMenu(candidates);
+			choice = startMenu();
 		}
 
 		// force the final tally somehow, print election results to

@@ -12,16 +12,19 @@ public class Voter
 	private BigInteger paillierVote = null;
 	private BigInteger vote = null;
 	private BigInteger signedVote = null;
+	private BigInteger n, g;
 	private Paillier encrypt;
+	private static ElectionBoard EB = ElectionBoard.getInstance();
+	private static BulletinBoard BB = BulletinBoard.getInstance();
 
 	// Initializer for the class
 	// Params		name is the name of the voter
 	//				id is a unique number assigned to this voter
-	public Voter(String name, Paillier p) {
-		if (numVoters >= ElectionBoard.numVoters())
-		{
-			return;
-		}
+	public Voter(String name, BigInteger n, BigInteger g) {
+//		if (numVoters > ElectionBoard.numVoters())
+//		{
+//			return;
+//		}
 		
 //		List<Voter> voters = ElectionBoard.getVoters();
 //		for (int i = 0; i < ElectionBoard.numVoters(); i++)
@@ -36,8 +39,9 @@ public class Voter
 //			}
 //		}
 		
-		this.name = name;
-		encrypt = p;
+		this.name = name;;
+		this.n = n;
+		this.g = g;
 		id = numVoters;
 		numVoters++;
 	}
@@ -74,13 +78,13 @@ public class Voter
 			didVote = true;
 			this.vote = vote;
 			
-			BigInteger e = ElectionBoard.getE();
-			BigInteger n = ElectionBoard.getN();
+			BigInteger e = EB.getE();
+			BigInteger n = EB.getN();
 
 	        BigInteger r = new BigInteger(512, new Random());
 	        rsaEncryptedVote = vote.multiply(r.pow(e.intValue())).mod(n);
 	        
-	        ElectionBoard.receiveVote(this, rsaEncryptedVote);
+	        EB.receiveVote(this, rsaEncryptedVote);
 		}
 		
 		else
@@ -96,27 +100,27 @@ public class Voter
 			signedVote = vote;
 		}
 		
-		for (int i = 0; i < ElectionBoard.numCandidates(); i++)
+		for (int i = 0; i < EB.numCandidates(); i++)
 		{
 			
 		}
 		
 		BigInteger r = new BigInteger(512, 64, new Random());
-		paillierVote = encrypt.Encryption(this.vote, r);
-		BulletinBoard.receiveVote(this);
+		//paillierVote = encrypt.Encryption(this.vote, r);
+		BB.receiveVote(this);
 	}
 	
 	public BigInteger[] zkp(BigInteger e)
 	{
 		BigInteger[] answer = new BigInteger[3];
-        BigInteger r = new BigInteger(512, new Random()).mod(encrypt.getN());
-        BigInteger s = new BigInteger(512, new Random()).mod(encrypt.getN());
+        BigInteger r = new BigInteger(512, new Random()).mod(n);
+        BigInteger s = new BigInteger(512, new Random()).mod(n);
 
-        BigInteger x = new BigInteger(512, new Random()).mod(encrypt.getN());
+        BigInteger x = new BigInteger(512, new Random()).mod(n);
         
-        answer[0] = encrypt.getG().pow(r.intValue()).multiply(s.pow(encrypt.getN().intValue())).mod(encrypt.getN().pow(2));
+        answer[0] = g.pow(r.intValue()).multiply(s.pow(n.intValue())).mod(n.pow(2));
         answer[1] = r.subtract(e.multiply(vote));
-        answer[2] = s.multiply(x.pow(-e.intValue())).multiply(encrypt.getG().pow((r.subtract(e.multiply(vote)).intValue())));
+        answer[2] = s.multiply(x.pow(-e.intValue())).multiply(g.pow((r.subtract(e.multiply(vote)).intValue())));
 	
         return answer;
 	}
