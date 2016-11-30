@@ -135,8 +135,11 @@ public class EVoting
 		// If true, continue, else return null
 
 		String display = "";
-
 		display += "Your encrypted vote was counted as:\n\n";
+
+		// Get the results of the encrypted vote somehow and add
+		// it to the string to display
+
 		JOptionPane.showMessageDialog(null, display);
 	}
 
