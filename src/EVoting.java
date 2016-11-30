@@ -101,14 +101,15 @@ public class EVoting
 	}
 
 	// Show message dialog containing the results of the election.
-	public static void displayElectionResults(BigInteger[] results)
+	public static void displayElectionResults(BigInteger results)
 	{
 		String display = "";
 		List<String> candidates = ElectionBoard.getCandidates();
+		String tally = results.toString();
 
 		for(int i = 0; i < candidates.size(); i++)
 		{
-			display += candidates.get(i) + ": " + results[i];
+			display += candidates.get(i) + ": " + results.charAt(i);
 			display += "\n";
 		}
 
