@@ -1,4 +1,5 @@
 import java.math.*;
+import java.util.List;
 import java.util.Random;
 
 public class Voter
@@ -7,8 +8,10 @@ public class Voter
 	private String name;
 	private int id;
 	private Boolean didVote = false;
-	private BigInteger[] encryptedVote = new BigInteger[ElectionBoard.numCandidates()];
-	private BigInteger[] encryptionVars;
+	private BigInteger rsaEncryptedVote = null;
+	private BigInteger paillierVote = null;
+	private BigInteger vote = null;
+	private BigInteger signedVote = null;
 	private Paillier encrypt;
 
 	// Initializer for the class
@@ -20,6 +23,18 @@ public class Voter
 			return;
 		}
 		
+//		List<Voter> voters = ElectionBoard.getVoters();
+//		for (int i = 0; i < ElectionBoard.numVoters(); i++)
+//		{
+//			if (voters.get(i).getName().equals(name))
+//			{
+//				if (voters.get(i).getVoteStatus())
+//				{
+//					return;
+//				}
+//				break;
+//			}
+//		}
 		
 		this.name = name;
 		encrypt = p;
@@ -42,37 +57,30 @@ public class Voter
 		return new Boolean(didVote);
 	}
 	
-	public BigInteger[] getVote()
+	public BigInteger getVote()
 	{
-		return encryptedVote.clone(); 
+		return new BigInteger(rsaEncryptedVote.toString());
 	}
 	
-	public void didVote(BigInteger[] vote)
+	public BigInteger getSignedVote()
+	{
+		return new BigInteger(signedVote.toString());
+	}
+	
+	public void didVote(BigInteger vote)
 	{
 		if (!didVote)
 		{
 			didVote = true;
+			this.vote = vote;
 			
-			BigInteger p = new BigInteger(256, 64, new Random());
-	        BigInteger q = new BigInteger(256, 64, new Random());       
-	        BigInteger n = p.multiply(q);
-	        BigInteger phiN = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+			BigInteger e = ElectionBoard.getE();
+			BigInteger n = ElectionBoard.getN();
 
-	        BigInteger e = new BigInteger("65537").mod(phiN);
-	        while (e.gcd(phiN) != BigInteger.ONE)
-	        {
-	        	e = new BigInteger(128, new Random()).mod(phiN);
-	        }
-        	
-	        BigInteger d = e.modInverse(phiN);
-
-	        for (int i = 0; i < ElectionBoard.numCandidates(); i++)
-	        {
-		        
-		        BigInteger r = new BigInteger(512, new Random());
-		        encryptionVars[i] = r;
-		        encryptedVote[i] = vote[i].multiply(r.pow(e.intValue())).mod(n);
-	        }
+	        BigInteger r = new BigInteger(512, new Random());
+	        rsaEncryptedVote = vote.multiply(r.pow(e.intValue())).mod(n);
+	        
+	        ElectionBoard.receiveVote(this, rsaEncryptedVote);
 		}
 		
 		else
@@ -81,14 +89,33 @@ public class Voter
 		}
 	}
 	
-	public BigInteger[] zkp(BigInteger e)
+	public void receiveSignature(BigInteger vote)
 	{
-		BigInteger[] answer = new BigInteger[3];
+		if (signedVote == null)
+		{
+			signedVote = vote;
+		}
+		
+		for (int i = 0; i < ElectionBoard.numCandidates(); i++)
+		{
+			
+		}
+		
+		BigInteger r = new BigInteger(512, 64, new Random());
+		paillierVote = encrypt.Encryption(this.vote, r);
+		BulletinBoard.receiveVote(this);
+	}
+	
+	public BigInteger[][] zkp(BigInteger e)
+	{
+		BigInteger[][] answer = new BigInteger[ElectionBoard.numCandidates()][3];
         BigInteger r = new BigInteger(512, new Random()).mod(encrypt.getN());
         BigInteger s = new BigInteger(512, new Random()).mod(encrypt.getN());
-		
+
+        BigInteger x = new BigInteger(512, new Random()).mod(encrypt.getN());
+        
         answer[0] = encrypt.getG().pow(r.intValue()).multiply(s.pow(encrypt.getN().intValue())).mod(encrypt.getN().pow(2));
-        answer[1] = r.subtract(e.multiply(val));
+        answer[1] = r.subtract(e.multiply());
 	
 	}
 }

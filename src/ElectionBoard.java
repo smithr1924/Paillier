@@ -12,6 +12,8 @@ public class ElectionBoard {
 	private static List<Voter> voters;
 	private static Paillier encrypt = new Paillier();
 	
+	private static BigInteger e,d,n;
+	
 	private ElectionBoard() {
 		try {
 			Scanner inFile = new Scanner(new File("voters.txt"));
@@ -55,6 +57,19 @@ public class ElectionBoard {
 		} catch (Exception e) {
 			System.out.println("error reading in file 'candidates.txt': " + e);
 		}
+		
+		BigInteger p = new BigInteger(256, 64, new Random());
+        BigInteger q = new BigInteger(256, 64, new Random());       
+        n = p.multiply(q);
+        BigInteger phiN = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+
+        e = new BigInteger("65537").mod(phiN);
+        while (e.gcd(phiN) != BigInteger.ONE)
+        {
+        	e = new BigInteger(128, new Random()).mod(phiN);
+        }
+    	
+        d = e.modInverse(phiN);
 	}
 	
 	// Returns the EM instance to be used where this class is needed
@@ -77,6 +92,21 @@ public class ElectionBoard {
 	{
 		return Collections.unmodifiableList(candidates);
 	}
+
+	public static List<Voter> getVoters()
+	{
+		return Collections.unmodifiableList(voters);
+	}
+	
+	public static BigInteger getN()
+	{
+		return new BigInteger(n.toString());
+	}
+	
+	public static BigInteger getE()
+	{
+		return new BigInteger(e.toString());
+	}
 	
 	// Receives a vote to be counted
 	// Params:		voter is an object indicating who voted
@@ -86,7 +116,7 @@ public class ElectionBoard {
 	//				else, do nothing.
 	// Returns:		null if the voter has already voted
 	//				otherwise, a signed vote array
-	public static BigInteger[] receiveVote(Voter voter, BigInteger[] vote)
+	public static BigInteger receiveVote(Voter voter, BigInteger vote)
 	{
 		if (voter.getVoteStatus())
 		{
@@ -96,27 +126,18 @@ public class ElectionBoard {
 		}
 		
 		voter.didVote(vote);
-		BigInteger[] answer = new BigInteger[ElectionBoard.numCandidates()];
+		BigInteger answer = vote.pow(d.intValue());
 		
-		for (int i = 0; i < vote.length; i++)
-		{
-			answer[i] = encrypt.Encryption(vote[i]);
-		}
 		return answer;
 	}
 	
 	// Receive encrypted tallies of votes, decrypt and announce
 	// Params:		votes is an array of BigIntegers representing the tallied votes for each candidate.
 	//					votes[0] is the first candidates tally and so on.
-	public static void decryptVotes(BigInteger[] votes)
+	public static void decryptVotes(BigInteger votes)
 	{
-		BigInteger[] answer = new BigInteger[numCandidates()];
-		
-		for (int i = 0; i < numCandidates(); i++)
-		{
-			answer[i] = encrypt.Decryption(votes[i]);
-		}
-		
-		
+		BigInteger answer = encrypt.Decryption(votes);
+				
+		EVoting.displayElectionResults(answer);
 	}
 }
