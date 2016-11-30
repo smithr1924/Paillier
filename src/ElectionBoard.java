@@ -14,22 +14,22 @@ public class ElectionBoard {
 	
 	private ElectionBoard() {
 		try {
-			// File myFile = new File("voters.txt");
 			Scanner inFile = new Scanner(new File("voters.txt"));
 
 			String line;
-
-			candidates = new ArrayList<String>();
-			voters = new ArrayList<Voter>();
+			
+			List<Voter> votes = new ArrayList<Voter>();
 
 			while(inFile.hasNext())
 			{
 				line = inFile.nextLine();				
 				
-				voters.add(new Voter(line));
+				votes.add(new Voter(line));
 			}
 			
 			inFile.close();
+			
+			voters = Collections.unmodifiableList(votes);
 			
 		} catch (Exception e) {
 			System.out.println("error reading in file 'voters.txt': " + e);
@@ -39,14 +39,18 @@ public class ElectionBoard {
 			Scanner inFile = new Scanner(new File("Candidates.txt"));
 
 			String line;
+			
+			List<String> cands = new ArrayList<String>();
 
 			while(inFile.hasNext()) {
 				line = inFile.nextLine();
 				
-				candidates.add(line);
+				cands.add(line);
 			}
 			
 			inFile.close();
+			
+			candidates = Collections.unmodifiableList(cands);
 			
 		} catch (Exception e) {
 			System.out.println("error reading in file 'candidates.txt': " + e);
