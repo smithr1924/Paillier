@@ -62,7 +62,7 @@ public class EVoting
 	// Menu that allows the user to input their name and vote
 	public static void login()
 	{
-		String a = JOptionPane.showInputDialog("What is your voter name?");
+		String username = JOptionPane.showInputDialog("What is your voter name?");
 
 		// Handle invalid names, people who have already voted
 		// If that's valid, call vote method, maybe with their name?
@@ -114,6 +114,30 @@ public class EVoting
 		JOptionPane.showMessageDialog(null, display);
 	}
 
+	// Confirm vote screen
+	public static int confirmVote()
+	{
+		String[] menu = {"Verify", "Exit"};
+		int input = (JOptionPane.showOptionDialog(null, 
+			"Check your vote was counted?", "Verification",
+			0, 3, null, menu, null));
+
+		return input;
+	}
+
+	public static void verifyNameForVoteCheck()
+	{
+		String username = JOptionPane.showInputDialog("What is your voter name?");
+
+		// TODO: verify the name somehow
+		// If true, continue, else return null
+
+		String display = "";
+
+		display += "Your encrypted vote was counted as:\n\n";
+		JOptionPane.showMessageDialog(null, display);
+	}
+
 	public static void main(String[] args)
 	{
 		// changeJOP(); // Uncomment this to enforce the colors/fonts
@@ -137,5 +161,13 @@ public class EVoting
 		// the console
 
 		// allow user to verify that their vote was obtained correctly
+		int confirmChoice = confirmVote();
+
+		while(input != 1)
+		{
+			verifyNameForVoteCheck();
+
+			input = confirmVote();
+		}
 	}
 }
