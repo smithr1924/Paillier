@@ -156,7 +156,7 @@ public class EVoting
 		{
 			switch(choice)
 			{
-				case 0: login();
+				case 0: login();	break;
 				case 1: // force the final tally
 			}
 			choice = startMenu();
