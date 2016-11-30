@@ -16,14 +16,23 @@ public class EVoting
 	public static void changeJOP()
 	{
 		UIManager.put("Label.font", new FontUIResource
-				(new Font("Comic Sans Ms", Font.BOLD, 20)));
-		UIManager.put("OptionPane.messageForeground",new Color(0,0,255));
-		UIManager.put("Panel.background",new Color(175,238,238));
-		UIManager.put("OptionPane.background",new Color(3,144,205));
-		UIManager.put("Button.background",new Color(65,105,255));
-		UIManager.put("Button.foreground", new Color(0,0,205));
+						(new Font("Times", Font.PLAIN, 26)));
+		UIManager.put("OptionPane.messageForeground",new Color(147,112,219));
+		UIManager.put("Panel.background",new Color(240,255,255));
+		UIManager.put("OptionPane.background",new Color(46,139,87));
+		UIManager.put("Button.background",new Color(32,178,170));
+		UIManager.put("Button.foreground", new Color(0,0,128));
 		UIManager.put("Button.font", new FontUIResource
-				(new Font("Comic Sans MS", Font.BOLD, 14)));
+						(new Font("Times", Font.PLAIN, 14)));
+		// UIManager.put("Label.font", new FontUIResource
+		// 		(new Font("Comic Sans Ms", Font.BOLD, 20)));
+		// UIManager.put("OptionPane.messageForeground",new Color(0,0,255));
+		// UIManager.put("Panel.background",new Color(175,238,238));
+		// UIManager.put("OptionPane.background",new Color(3,144,205));
+		// UIManager.put("Button.background",new Color(65,105,255));
+		// UIManager.put("Button.foreground", new Color(0,0,205));
+		// UIManager.put("Button.font", new FontUIResource
+		// 		(new Font("Comic Sans MS", Font.BOLD, 14)));
 	}
 
 	public static int candidateMenuHARDCODE()
