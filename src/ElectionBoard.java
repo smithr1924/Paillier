@@ -104,7 +104,7 @@ public class ElectionBoard {
 	// Receive encrypted tallies of votes, decrypt and announce
 	// Params:		votes is an array of BigIntegers representing the tallied votes for each candidate.
 	//					votes[0] is the first candidates tally and so on.
-	public static void tallyVotes(BigInteger[] votes)
+	public static void decryptVotes(BigInteger[] votes)
 	{
 		BigInteger[] answer = new BigInteger[numCandidates()];
 		
@@ -112,5 +112,7 @@ public class ElectionBoard {
 		{
 			answer[i] = encrypt.Decryption(votes[i]);
 		}
+		
+		
 	}
 }
