@@ -128,7 +128,7 @@ public class EVoting
 				case 0: login();
 				case 1: // force the final tally
 			}
-			choice = menu();
+			choice = startMenu();
 		}
 
 		// force the final tally somehow, print election results to
