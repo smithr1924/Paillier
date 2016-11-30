@@ -76,7 +76,7 @@ public class EVoting
 	// Menu that allows the user to input their name and vote
 	public static void login(String[] candidates)
 	{
-		String a = JOptionPane.showInputDialog("What is your voter name?");
+		String username = JOptionPane.showInputDialog("What is your voter name?");
 
 		// Handle invalid names, people who have already voted
 		// If that's valid, call vote method, maybe with their name?
