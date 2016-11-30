@@ -59,7 +59,7 @@ public class EVoting
 
 	// Menu that appears at the start, allowing logins or
 	// viewing of the final election results.
-	public static int startMenu()
+	public static int startMenu(String[] candidates)
 	{
 		String[] menu = {"Login and vote", "End the poll", "Exit"};
 		int input = (JOptionPane.showOptionDialog(null, 
@@ -69,19 +69,19 @@ public class EVoting
 	}
 
 	// Menu that allows the user to input their name and vote
-	public static void login()
+	public static void login(String[] candidates)
 	{
 		String a = JOptionPane.showInputDialog("What is your voter name?");
 
 		// Handle invalid names, people who have already voted
 		// If that's valid, call vote method, maybe with their name?
 
-		vote();
+		vote(candidates);
 	}
 
-	public static void vote()
+	public static void vote(String[] candidates)
 	{
-		int vote = candidateMenu(candidates, numCandidates);
+		int vote = candidateMenu(candidates);
 
 		// Process the vote
 		getVoteBlindSigned();
@@ -109,7 +109,7 @@ public class EVoting
 
 		for(int i = 0; i < candidates.size(); i++)
 		{
-			display += candidates.get(i) + ": " + results.charAt(i);
+			display += candidates.get(i) + ": " + tally.charAt(i);
 			display += "\n";
 		}
 
@@ -119,20 +119,18 @@ public class EVoting
 	public static void main(String[] args)
 	{
 		// changeJOP(); // Uncomment this to enforce the colors/fonts
-
-		ElectionBoard EB = ElectionBoard.getInstance();
-		BulletinBoard BB = BulletinBoard.getInstance();
 		
 		// Repeat the login screen as often as necessary
-		int choice = startMenu();
+		String[] candidates = (String[]) ElectionBoard.getCandidates().toArray();
+		int choice = startMenu(candidates);
 		while(choice != 2)
 		{
 			switch(choice)
 			{
-				case 0: login();
+				case 0: login(candidates);
 				case 1: // force the final tally
 			}
-			choice = startMenu();
+			choice = startMenu(candidates);
 		}
 
 		// force the final tally somehow, print election results to

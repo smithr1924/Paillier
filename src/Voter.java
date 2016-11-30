@@ -106,16 +106,18 @@ public class Voter
 		BulletinBoard.receiveVote(this);
 	}
 	
-	public BigInteger[][] zkp(BigInteger e)
+	public BigInteger[] zkp(BigInteger e)
 	{
-		BigInteger[][] answer = new BigInteger[ElectionBoard.numCandidates()][3];
+		BigInteger[] answer = new BigInteger[3];
         BigInteger r = new BigInteger(512, new Random()).mod(encrypt.getN());
         BigInteger s = new BigInteger(512, new Random()).mod(encrypt.getN());
 
         BigInteger x = new BigInteger(512, new Random()).mod(encrypt.getN());
         
         answer[0] = encrypt.getG().pow(r.intValue()).multiply(s.pow(encrypt.getN().intValue())).mod(encrypt.getN().pow(2));
-        answer[1] = r.subtract(e.multiply());
+        answer[1] = r.subtract(e.multiply(vote));
+        answer[2] = s.multiply(x.pow(-e.intValue())).multiply(encrypt.getG().pow((r.subtract(e.multiply(vote)).intValue())));
 	
+        return answer;
 	}
 }
