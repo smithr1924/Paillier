@@ -92,9 +92,24 @@ public class EVoting
 	}
 
 	// Send the vote to the bulletin board.
-	public static sendVoteToBB()
+	public static void sendVoteToBB()
 	{
 
+	}
+
+	// Show message dialog containing the results of the election.
+	public static void displayElectionResults(BigInteger[] results)
+	{
+		String display = "";
+		List<String> candidates = ElectionBoard.getCandidates();
+
+		for(int i = 0; i < candidates.size(); i++)
+		{
+			display += candidates[i] + ": " + results[i];
+			display += "\n";
+		}
+
+		JOptionPane.showMessageDialog(null, display);
 	}
 
 	public static void main(String[] args)
