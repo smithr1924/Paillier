@@ -125,6 +125,8 @@ public class EVoting
 		return input;
 	}
 
+	// Prompts the user to enter their name and displays to them their
+	// encrypted vote to allow them to confirm their vote is correct.
 	public static void verifyNameForVoteCheck()
 	{
 		String username = JOptionPane.showInputDialog("What is your voter name?");
