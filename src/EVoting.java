@@ -3,6 +3,8 @@ import java.awt.Font;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.util.List;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -105,7 +107,7 @@ public class EVoting
 
 		for(int i = 0; i < candidates.size(); i++)
 		{
-			display += candidates[i] + ": " + results[i];
+			display += candidates.get(i) + ": " + results[i];
 			display += "\n";
 		}
 
