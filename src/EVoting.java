@@ -85,14 +85,6 @@ public class EVoting
 
 	}
 
-	// Zero Knowledge Proof function
-	// Don't even know if it will be necessary, but it's here
-	// if we need it.
-	public static void zkp()
-	{
-
-	}
-
 	// Send the vote to the bulletin board.
 	public static void sendVoteToBB()
 	{

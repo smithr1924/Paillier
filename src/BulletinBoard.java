@@ -18,10 +18,25 @@ public class BulletinBoard {
 		return instance;
 	}
 	
-	public static void receiveVote(int voter, BigInteger[] vote)
+	public static void receiveVote(Voter voter, BigInteger[] vote)
+	{
+		if (zkp(voter, vote))
+			matrix[voter.getID()] = vote.clone();
+	}
+	
+	public static void tallyVotes()
 	{
 		
 	}
-	
-	public static 
+
+	// Zero Knowledge Proof function
+	// Don't even know if it will be necessary, but it's here
+	// if we need it.
+	public static Boolean zkp(Voter voter, BigInteger[] vote)
+	{
+		
+		
+		return true;
+	}
+
 }

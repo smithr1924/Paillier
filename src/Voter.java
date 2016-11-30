@@ -1,4 +1,5 @@
 import java.math.*;
+import java.util.Random;
 
 public class Voter
 {
@@ -6,19 +7,23 @@ public class Voter
 	private String name;
 	private int id;
 	private Boolean didVote = false;
-	private BigInteger[] vote = new BigInteger[ElectionBoard.numCandidates()];
+	private BigInteger[] encryptedVote = new BigInteger[ElectionBoard.numCandidates()];
+	private BigInteger[] encryptionVars;
+	private Paillier encrypt;
 
 	// Initializer for the class
 	// Params		name is the name of the voter
 	//				id is a unique number assigned to this voter
-	public Voter(String name) {
+	public Voter(String name, Paillier p) {
 		if (numVoters >= ElectionBoard.numVoters())
 		{
-			throw new SecurityException("Maximum number of voters already reached");
+			return;
 		}
 		
+		
 		this.name = name;
-		this.id = numVoters;
+		encrypt = p;
+		id = numVoters;
 		numVoters++;
 	}
 
@@ -39,20 +44,51 @@ public class Voter
 	
 	public BigInteger[] getVote()
 	{
-		return vote.clone(); 
+		return encryptedVote.clone(); 
 	}
 	
-	public void didVote(BigInteger[] encryptedVote)
+	public void didVote(BigInteger[] vote)
 	{
 		if (!didVote)
 		{
 			didVote = true;
-			vote = encryptedVote.clone();
+			
+			BigInteger p = new BigInteger(256, 64, new Random());
+	        BigInteger q = new BigInteger(256, 64, new Random());       
+	        BigInteger n = p.multiply(q);
+	        BigInteger phiN = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+
+	        BigInteger e = new BigInteger("65537").mod(phiN);
+	        while (e.gcd(phiN) != BigInteger.ONE)
+	        {
+	        	e = new BigInteger(128, new Random()).mod(phiN);
+	        }
+        	
+	        BigInteger d = e.modInverse(phiN);
+
+	        for (int i = 0; i < ElectionBoard.numCandidates(); i++)
+	        {
+		        
+		        BigInteger r = new BigInteger(512, new Random());
+		        encryptionVars[i] = r;
+		        encryptedVote[i] = vote[i].multiply(r.pow(e.intValue())).mod(n);
+	        }
 		}
 		
 		else
 		{
-			throw new SecurityException("User "+name+" has already voted");
+			System.out.println("User "+name+" has already voted");
 		}
+	}
+	
+	public BigInteger[] zkp(BigInteger e)
+	{
+		BigInteger[] answer = new BigInteger[3];
+        BigInteger r = new BigInteger(512, new Random()).mod(encrypt.getN());
+        BigInteger s = new BigInteger(512, new Random()).mod(encrypt.getN());
+		
+        answer[0] = encrypt.getG().pow(r.intValue()).multiply(s.pow(encrypt.getN().intValue())).mod(encrypt.getN().pow(2));
+        answer[1] = r.subtract(e.multiply(val));
+	
 	}
 }

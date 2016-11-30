@@ -24,7 +24,7 @@ public class ElectionBoard {
 			{
 				line = inFile.nextLine();				
 				
-				votes.add(new Voter(line));
+				votes.add(new Voter(line, encrypt));
 			}
 			
 			inFile.close();

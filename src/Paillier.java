@@ -37,11 +37,11 @@ public class Paillier {
     /**
      * n = p*q, where p and q are two large primes.
      */
-    public BigInteger n;
+    private BigInteger n;
     /**
      * nsquare = n*n
      */
-    public BigInteger nsquare;
+    private BigInteger nsquare;
     /**
      * a random integer in Z*_{n^2} where gcd (L(g^lambda mod n^2), n) = 1.
      */
@@ -120,6 +120,16 @@ public class Paillier {
     public BigInteger Decryption(BigInteger c) {
         BigInteger u = g.modPow(lambda, nsquare).subtract(BigInteger.ONE).divide(n).modInverse(n);
         return c.modPow(lambda, nsquare).subtract(BigInteger.ONE).divide(n).multiply(u).mod(n);
+    }
+    
+    public BigInteger getN()
+    {
+    	return new BigInteger(n.toString());
+    }
+    
+    public BigInteger getG()
+    {
+    	return new BigInteger(g.toString());
     }
 
 //    /**
