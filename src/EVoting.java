@@ -167,8 +167,8 @@ public class EVoting
 		{
 			switch(choice)
 			{
-				case 0: login(candidates);
-				case 1: displayElectionResults();
+				case 0: login(candidates); break;
+				case 1: displayElectionResults(); break;
 			}
 			choice = startMenu();
 		}
