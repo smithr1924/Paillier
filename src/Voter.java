@@ -90,8 +90,8 @@ public class Voter
 			BigInteger e = EB.getE();
 			BigInteger n = EB.getN();
 
-	        BigInteger r = new BigInteger(512, new Random());
-	        rsaEncryptedVote = vote.multiply(r.pow(e.intValue())).mod(n);
+			BigInteger r = new BigInteger(512, new Random());
+			rsaEncryptedVote = vote.multiply(r.pow(e.intValue())).mod(n);
 		}
 		
 		else
@@ -107,22 +107,24 @@ public class Voter
 			signedVote = vote;
 		}
 	}
-		
+	
 	public BigInteger[] zkp(BigInteger e)
 	{
 		BigInteger[] answer = new BigInteger[3];
-        BigInteger r = new BigInteger(8, new Random()).mod(n);
-        BigInteger s = new BigInteger(8, new Random()).mod(n);
-        System.out.println("second");        
-        
-        System.out.println("S: "+s+" x: "+x+" e: "+e);
-        
-        answer[0] = g.modPow(r, n.pow(2)).multiply(s.modPow(n, n.pow(2)));
-        answer[0] = answer[0].mod(n.pow(2));
-        
-        answer[1] = r.subtract(e.multiply(clearVote));
-        answer[2] = s.multiply(x.pow(e.intValue()));
+		BigInteger r = new BigInteger(8, new Random()).mod(n);
+		// BigInteger s = new BigInteger(8, new Random()).mod(n);
+		// s must be coprime to n
+		BigInteger s = new BigInteger("29");
+		System.out.println("second");
+		
+		System.out.println("S: "+s+" x: "+x+" e: "+e);
+		
+		answer[0] = g.modPow(r, n.pow(2)).multiply(s.modPow(n, n.pow(2)));
+		answer[0] = answer[0].mod(n.pow(2));
+		
+		answer[1] = r.subtract(e.multiply(clearVote));
+		answer[2] = s.multiply(x.pow(e.intValue()));
 	
-        return answer;
+		return answer;
 	}
 }
