@@ -122,7 +122,7 @@ public class EVoting
         
         BigInteger signedVote = EB.receiveVote(voter);
         voter.receiveSignature(signedVote);
-//        System.out.println("signed: ");
+        System.out.println("signed: ");
         sendVoteToBB(voter);
 	}
 
