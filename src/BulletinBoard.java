@@ -66,15 +66,32 @@ public class BulletinBoard {
 		BigInteger w = results[2];
 		System.out.println("G; "+EB.getPaillierG()+" c: "+vote+" w: "+ w+" u: "+u);
 		System.out.println("here1");
-		Boolean answerA = u.mod(EB.getPaillierG().pow(v.intValue())).mod(EB.getPaillierN().pow(2)) == (BigInteger.ZERO);
-		Boolean answerB = u.mod(vote.pow(e.intValue())) == (BigInteger.ZERO);
-		Boolean answerC = u.mod(w.pow(EB.getPaillierN().intValue())).mod(EB.getPaillierN().pow(2)) == (BigInteger.ZERO);
-		System.out.println("a: "+answerA+" b: "+answerB+" c: "+answerC);
+
+		BigInteger n = EB.getPaillierN();
+		BigInteger nSquared = n.pow(2);
+
+		BigInteger nicosInt = g.modPow(v, nSquared);
+		nicosInt = nicosInt.multiply(c.modPow(e, nSquared));
+		nicosInt = nicosInt.mod(nSquared);
+
+		nicosInt = nicosInt.multiply(w.modPow(n, nSquared));
+		nicosInt = nicosInt.mod(nSquared);
+
+		Boolean answer = nicosInt.equals(u);
+
+		System.out.println("nicosInt == u: " + answer);
+
+		return answer;
+
+		// Boolean answerA = u.mod(EB.getPaillierG().pow(v.intValue())).mod(EB.getPaillierN().pow(2)) == (BigInteger.ZERO);
+		// Boolean answerB = u.mod(vote.pow(e.intValue())) == (BigInteger.ZERO);
+		// Boolean answerC = u.mod(w.pow(EB.getPaillierN().intValue())).mod(EB.getPaillierN().pow(2)) == (BigInteger.ZERO);
+		// System.out.println("a: "+answerA+" b: "+answerB+" c: "+answerC);
 		
-		System.out.println("a: "+u.mod(EB.getPaillierG().pow(v.intValue()))+" b: "+answerB+" c: "+u.mod(w.pow(EB.getPaillierN().intValue())));
+		// System.out.println("a: "+u.mod(EB.getPaillierG().pow(v.intValue()))+" b: "+answerB+" c: "+u.mod(w.pow(EB.getPaillierN().intValue())));
 		
-		Boolean answer = (u.mod(EB.getPaillierG().pow(v.intValue())) == BigInteger.ZERO
-				&& u.mod(vote.pow(e.intValue())) == BigInteger.ZERO && u.mod(w.pow(EB.getPaillierN().intValue())) == BigInteger.ZERO);
+		// Boolean answer = (u.mod(EB.getPaillierG().pow(v.intValue())) == BigInteger.ZERO
+		// 		&& u.mod(vote.pow(e.intValue())) == BigInteger.ZERO && u.mod(w.pow(EB.getPaillierN().intValue())) == BigInteger.ZERO);
 //		System.out.println("here2");
 //		newU = newU.multiply(vote.pow(e.intValue()));
 //		System.out.println("here3");
@@ -84,9 +101,7 @@ public class BulletinBoard {
 //		System.out.println("u: "+u);
 ////		System.out.println("newu: "+newU);
 //		Boolean answer = u == newU;
-		System.out.println(answer);
-		return answer;
+		// System.out.println(answer);
+		// return answer;
 	}
-
-
 }
