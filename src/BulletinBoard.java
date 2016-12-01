@@ -64,8 +64,15 @@ public class BulletinBoard {
 		BigInteger u = results[0];
 		BigInteger v = results[1];
 		BigInteger w = results[2];
-		System.out.println("G; "+EB.getPaillierG()+" c: "+vote+" w: "+ w);
+		System.out.println("G; "+EB.getPaillierG()+" c: "+vote+" w: "+ w+" u: "+u);
 		System.out.println("here1");
+		Boolean answerA = u.mod(EB.getPaillierG().pow(v.intValue())).mod(EB.getPaillierN().pow(2)) == (BigInteger.ZERO);
+		Boolean answerB = u.mod(vote.pow(e.intValue())) == (BigInteger.ZERO);
+		Boolean answerC = u.mod(w.pow(EB.getPaillierN().intValue())).mod(EB.getPaillierN().pow(2)) == (BigInteger.ZERO);
+		System.out.println("a: "+answerA+" b: "+answerB+" c: "+answerC);
+		
+		System.out.println("a: "+u.mod(EB.getPaillierG().pow(v.intValue()))+" b: "+answerB+" c: "+u.mod(w.pow(EB.getPaillierN().intValue())));
+		
 		Boolean answer = (u.mod(EB.getPaillierG().pow(v.intValue())) == BigInteger.ZERO
 				&& u.mod(vote.pow(e.intValue())) == BigInteger.ZERO && u.mod(w.pow(EB.getPaillierN().intValue())) == BigInteger.ZERO);
 //		System.out.println("here2");
