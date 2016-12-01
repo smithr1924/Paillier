@@ -108,6 +108,8 @@ public class EVoting
 	{
 		int vote = candidateMenu(candidates);
 
+		vote = (int)(Math.pow(10.0, (double)vote));
+
 		// Process the vote
 		getVoteBlindSigned(voter, vote);
 	}
