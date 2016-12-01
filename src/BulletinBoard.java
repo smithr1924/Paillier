@@ -64,18 +64,25 @@ public class BulletinBoard {
 		BigInteger u = results[0];
 		BigInteger v = results[1];
 		BigInteger w = results[2];
-		System.out.println("G; "+EB.getPaillierG()+" c: "+vote+" w: "+ w+" u: "+u);
+		System.out.println("g: "+EB.getPaillierG()+" c: "+vote+" w: "+ w+" u: "+u);
 		System.out.println("here1");
 
 		BigInteger n = EB.getPaillierN();
 		BigInteger nSquared = n.pow(2);
+		
+		System.out.println("n2:"+nSquared);
 
-		BigInteger nicosInt = g.modPow(v, nSquared);
-		nicosInt = nicosInt.multiply(c.modPow(e, nSquared));
+		BigInteger nicosInt = EB.getPaillierG().modPow(v, nSquared);
+		System.out.println("int: "+nicosInt);
+		nicosInt = nicosInt.multiply(vote.modPow(e.negate(), nSquared));
+		System.out.println("vote.modPow(e, nSquared):" + vote.modPow(e.negate(), nSquared));
 		nicosInt = nicosInt.mod(nSquared);
+		System.out.println("int:"+nicosInt);
 
 		nicosInt = nicosInt.multiply(w.modPow(n, nSquared));
+		System.out.println("int:"+nicosInt);
 		nicosInt = nicosInt.mod(nSquared);
+		System.out.println("int:"+nicosInt);
 
 		Boolean answer = nicosInt.equals(u);
 
