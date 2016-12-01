@@ -163,4 +163,10 @@ public class ElectionBoard {
 		BigInteger answer = encrypt.Decryption(votes);
 		return answer;
 	}
+	
+	public BigInteger encryptVote(BigInteger votes)
+	{
+		BigInteger answer = encrypt.Encryption(votes);
+		return answer;
+	}
 }

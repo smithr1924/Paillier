@@ -122,19 +122,21 @@ public class EVoting
 		voter.didVote(new BigInteger(tmp), EB);
         
         BigInteger signedVote = EB.receiveVote(voter);
+        voter.receiveSignature(signedVote);
 //        System.out.println("signed: "+signedVote);
-        sendVoteToBB(voter, signedVote);
+        sendVoteToBB(voter);
 	}
 
 	// Send the vote to the bulletin board.
-	public static void sendVoteToBB(Voter voter, BigInteger signedVote)
+	public static void sendVoteToBB(Voter voter)
 	{
-		
+		BB.receiveVote(voter);
 	}
 
 	// Show message dialog containing the results of the election.
-	public static void displayElectionResults(BigInteger results)
+	public static void displayElectionResults()
 	{
+		BigInteger results = BB.tallyVotes();
 		String display = "";
 		List<String> candidates = EB.getCandidates();
 		String tally = results.toString();
@@ -154,6 +156,8 @@ public class EVoting
 		
 		EB = ElectionBoard.getInstance();
 		BB = BulletinBoard.getInstance();
+		
+		BB.setSize(EB.numVoters());
 		// Repeat the login screen as often as necessary
 		
 		String[] candidates = new String[EB.numCandidates()];
@@ -164,7 +168,7 @@ public class EVoting
 			switch(choice)
 			{
 				case 0: login(candidates);
-				case 1: // force the final tally
+				case 1: displayElectionResults();
 			}
 			choice = startMenu();
 		}

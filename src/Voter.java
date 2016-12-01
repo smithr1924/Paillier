@@ -13,7 +13,6 @@ public class Voter
 	private BigInteger vote = null;
 	private BigInteger signedVote = null;
 	private BigInteger n, g;
-	private Paillier encrypt;
 //	private static ElectionBoard EB;
 //	private static BulletinBoard BB;
 
@@ -73,12 +72,18 @@ public class Voter
 		return new BigInteger(signedVote.toString());
 	}
 	
+	public BigInteger getPaillierVote()
+	{
+		return new BigInteger(paillierVote.toString());
+	}
+	
 	public void didVote(BigInteger vote, ElectionBoard EB)
 	{
 		if (!didVote)
 		{
 			didVote = true;
 			this.vote = vote;
+			paillierVote = EB.encryptVote(vote);
 			
 			System.out.println("vote: " + vote);
 			BigInteger e = EB.getE();
@@ -96,23 +101,14 @@ public class Voter
 		}
 	}
 	
-	public void receiveSignature(BigInteger vote, ElectionBoard EB, BulletinBoard BB)
+	public void receiveSignature(BigInteger vote)
 	{
 		if (signedVote == null)
 		{
 			signedVote = vote;
 		}
-		
-		for (int i = 0; i < EB.numCandidates(); i++)
-		{
-			
-		}
-		
-		BigInteger r = new BigInteger(512, 64, new Random());
-		//paillierVote = encrypt.Encryption(this.vote, r);
-		BB.receiveVote(this);
 	}
-	
+		
 	public BigInteger[] zkp(BigInteger e)
 	{
 		BigInteger[] answer = new BigInteger[3];
