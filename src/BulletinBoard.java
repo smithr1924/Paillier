@@ -23,7 +23,7 @@ public class BulletinBoard {
 	public void receiveVote(Voter voter)
 	{
 		BigInteger signedVote = voter.getSignedVote();
-		BigInteger vote = voter.getVote();
+		BigInteger vote = voter.getRSAVote();
 		if (zkpPaillier(voter, vote) && zkpSigned(voter, signedVote))
 			matrix[voter.getID()] = new BigInteger(vote.toString());
 	}

@@ -14,8 +14,8 @@ public class Voter
 	private BigInteger signedVote = null;
 	private BigInteger n, g;
 	private Paillier encrypt;
-	private static ElectionBoard EB = ElectionBoard.getInstance();
-	private static BulletinBoard BB = BulletinBoard.getInstance();
+//	private static ElectionBoard EB;
+//	private static BulletinBoard BB;
 
 	// Initializer for the class
 	// Params		name is the name of the voter
@@ -38,6 +38,8 @@ public class Voter
 //				break;
 //			}
 //		}
+//		EB = ElectionBoard.getInstance();
+//		BB = BulletinBoard.getInstance();
 		
 		this.name = name;;
 		this.n = n;
@@ -61,7 +63,7 @@ public class Voter
 		return new Boolean(didVote);
 	}
 	
-	public BigInteger getVote()
+	public BigInteger getRSAVote()
 	{
 		return new BigInteger(rsaEncryptedVote.toString());
 	}
@@ -71,20 +73,20 @@ public class Voter
 		return new BigInteger(signedVote.toString());
 	}
 	
-	public void didVote(BigInteger vote)
+	public void didVote(BigInteger vote, ElectionBoard EB)
 	{
 		if (!didVote)
 		{
 			didVote = true;
 			this.vote = vote;
 			
+			System.out.println("dkafjasdklfjsdklfjadf");
 			BigInteger e = EB.getE();
 			BigInteger n = EB.getN();
 
 	        BigInteger r = new BigInteger(512, new Random());
+	        System.out.println(e.intValue());
 	        rsaEncryptedVote = vote.multiply(r.pow(e.intValue())).mod(n);
-	        
-	        EB.receiveVote(this, rsaEncryptedVote);
 		}
 		
 		else
@@ -93,7 +95,7 @@ public class Voter
 		}
 	}
 	
-	public void receiveSignature(BigInteger vote)
+	public void receiveSignature(BigInteger vote, ElectionBoard EB, BulletinBoard BB)
 	{
 		if (signedVote == null)
 		{

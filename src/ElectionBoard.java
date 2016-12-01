@@ -71,20 +71,14 @@ public class ElectionBoard {
 			System.out.println("error reading in file 'candidates.txt': " + e);
 		}
 		
-		BigInteger p = new BigInteger(256, 64, new Random());
-        BigInteger q = new BigInteger(256, 64, new Random());       
+		BigInteger p = new BigInteger(8, 64, new Random());
+        BigInteger q = new BigInteger(8, 64, new Random());       
         n = p.multiply(q);
         BigInteger phiN = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 
-        //e = new BigInteger("65537").mod(phiN);
         e = phiN.subtract(BigInteger.ONE);
-//        while (e.gcd(phiN) != BigInteger.ONE)
-//        {
-//        	System.out.println("plsno");
-//        	e = new BigInteger(128, new Random()).mod(phiN);
-//        }
-    	
         d = e.modInverse(phiN);
+        
 	}
 	
 	// Returns the EM instance to be used where this class is needed
@@ -131,16 +125,9 @@ public class ElectionBoard {
 	//				else, do nothing.
 	// Returns:		null if the voter has already voted
 	//				otherwise, a signed vote array
-	public BigInteger receiveVote(Voter voter, BigInteger vote)
+	public BigInteger receiveVote(Voter voter)
 	{
-		if (voter.getVoteStatus())
-		{
-			// Voter already voted once
-			System.out.println("Voter " + voter + " has already voted!");
-			return null;
-		}
-		
-		voter.didVote(vote);
+		BigInteger vote = voter.getRSAVote();
 		BigInteger answer = vote.pow(d.intValue());
 		
 		return answer;

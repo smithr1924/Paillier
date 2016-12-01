@@ -14,8 +14,8 @@ import javax.swing.plaf.FontUIResource;
 
 public class EVoting
 {
-//	private static ElectionBoard EB = ElectionBoard.getInstance();
-//	private static BulletinBoard BB = BulletinBoard.getInstance();
+	private static ElectionBoard EB;
+	private static BulletinBoard BB;
 	
 	// Function to change the look of the popup windows
 	public static void changeJOP()
@@ -80,23 +80,46 @@ public class EVoting
 
 		// Handle invalid names, people who have already voted
 		// If that's valid, call vote method, maybe with their name?
+		
+		List<Voter> voters = EB.getVoters();
+		Voter thisVoter;
+		for (int i = 0; i < EB.numVoters(); i++)
+		{
+			if (voters.get(i).getName().equals(username))
+			{
+				System.out.println("valid name");
+				if (voters.get(i).getVoteStatus())
+				{
+					System.out.println("already voted");
+					return;
+				}
+				
+				else
+				{
+					thisVoter = voters.get(i);
+					vote(thisVoter, candidates);
+				}
+			}
+		}
 
-		vote(candidates);
 	}
 
-	public static void vote(String[] candidates)
+	public static void vote(Voter voter, String[] candidates)
 	{
 		int vote = candidateMenu(candidates);
 
 		// Process the vote
-		getVoteBlindSigned();
+		getVoteBlindSigned(voter, vote);
 	}
 
 	// Take the user's vote and have it blindly signed by
 	// the Election Board.
-	public static void getVoteBlindSigned()
+	public static void getVoteBlindSigned(Voter voter, int vote)
 	{
-
+		String tmp = "" + vote;
+		voter.didVote(new BigInteger(tmp), EB);
+        
+        BigInteger signedVote = EB.receiveVote(voter);
 	}
 
 	// Send the vote to the bulletin board.
@@ -106,7 +129,7 @@ public class EVoting
 	}
 
 	// Show message dialog containing the results of the election.
-	public static void displayElectionResults(BigInteger results, ElectionBoard EB)
+	public static void displayElectionResults(BigInteger results)
 	{
 		String display = "";
 		List<String> candidates = EB.getCandidates();
@@ -125,21 +148,12 @@ public class EVoting
 	{
 		changeJOP(); // Uncomment this to enforce the colors/fonts
 		
-		System.out.println("pls");
-		ElectionBoard EB = ElectionBoard.getInstance();
+		EB = ElectionBoard.getInstance();
+		BB = BulletinBoard.getInstance();
 		// Repeat the login screen as often as necessary
 		
-		try {
-			TimeUnit.SECONDS.sleep(2);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Num candidates: ");
-		System.out.println(EB.numCandidates());
 		String[] candidates = new String[EB.numCandidates()];
 		candidates = EB.getCandidates().toArray(candidates);
-		System.out.println("sdfksdjf");
 		int choice = startMenu();
 		while(choice != 2)
 		{
