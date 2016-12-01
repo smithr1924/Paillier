@@ -122,12 +122,14 @@ public class EVoting
 		voter.didVote(new BigInteger(tmp), EB);
         
         BigInteger signedVote = EB.receiveVote(voter);
+//        System.out.println("signed: "+signedVote);
+        sendVoteToBB(voter, signedVote);
 	}
 
 	// Send the vote to the bulletin board.
-	public static void sendVoteToBB()
+	public static void sendVoteToBB(Voter voter, BigInteger signedVote)
 	{
-
+		
 	}
 
 	// Show message dialog containing the results of the election.

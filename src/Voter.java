@@ -80,13 +80,14 @@ public class Voter
 			didVote = true;
 			this.vote = vote;
 			
-			System.out.println("dkafjasdklfjsdklfjadf");
+			System.out.println("vote: " + vote);
 			BigInteger e = EB.getE();
 			BigInteger n = EB.getN();
 
 	        BigInteger r = new BigInteger(512, new Random());
 	        System.out.println(e.intValue());
 	        rsaEncryptedVote = vote.multiply(r.pow(e.intValue())).mod(n);
+	        System.out.println("encrypt: " + rsaEncryptedVote);
 		}
 		
 		else

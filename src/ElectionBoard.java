@@ -70,15 +70,37 @@ public class ElectionBoard {
 		} catch (Exception e) {
 			System.out.println("error reading in file 'candidates.txt': " + e);
 		}
+		BigInteger p, q;
+		do {
+			p = new BigInteger(8, 64, new Random());
+		} while (!isPrime(p.intValue()));
 		
-		BigInteger p = new BigInteger(8, 64, new Random());
-        BigInteger q = new BigInteger(8, 64, new Random());       
+		do {
+			q = new BigInteger(8, 64, new Random()); 
+		} while (!isPrime(q.intValue()));
+		
+		System.out.println("p: "+p+", q: "+q);
         n = p.multiply(q);
         BigInteger phiN = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 
-        e = phiN.subtract(BigInteger.ONE);
+//        e = phiN.subtract(BigInteger.ONE);
+        do {
+        	e = new BigInteger(12, 64, new Random());
+        } while (e.compareTo(phiN) >= 0);
         d = e.modInverse(phiN);
         
+        System.out.println("e: "+e+", d: "+d);
+	}
+	
+	public boolean isPrime(int n) {
+	    //check if n is a multiple of 2
+	    if (n%2==0) return false;
+	    //if not, then just check the odds
+	    for(int i=3;i*i<=n;i+=2) {
+	        if(n%i==0)
+	            return false;
+	    }
+	    return true;
 	}
 	
 	// Returns the EM instance to be used where this class is needed
