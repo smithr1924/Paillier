@@ -87,16 +87,15 @@ public class EVoting
 		{
 			if (voters.get(i).getName().equals(username))
 			{
-				System.out.println("valid name");
+				thisVoter = voters.get(i);
 				if (voters.get(i).getVoteStatus())
 				{
-					System.out.println("already voted");
+					System.out.println("User "+thisVoter.getName()+" already voted");
 					return;
 				}
 				
 				else
 				{
-					thisVoter = voters.get(i);
 					vote(thisVoter, candidates);
 				}
 			}
@@ -123,7 +122,7 @@ public class EVoting
         
         BigInteger signedVote = EB.receiveVote(voter);
         voter.receiveSignature(signedVote);
-//        System.out.println("signed: "+signedVote);
+//        System.out.println("signed: ");
         sendVoteToBB(voter);
 	}
 
@@ -136,18 +135,22 @@ public class EVoting
 	// Show message dialog containing the results of the election.
 	public static void displayElectionResults()
 	{
-		BigInteger results = BB.tallyVotes();
+		BigInteger encryptedResults = BB.tallyVotes(EB.getPaillierN());
+		BigInteger results = EB.decryptVotes(encryptedResults);
 		String display = "";
 		List<String> candidates = EB.getCandidates();
 		String tally = results.toString();
-
-		for(int i = 0; i < candidates.size(); i++)
+		System.out.println("tally: "+tally);
+		
+		for(int i = 0; i < tally.length(); i++)
 		{
-			display += candidates.get(i) + ": " + tally.charAt(i);
+			display += candidates.get(tally.length()-1-i) + ": " + tally.charAt(i);
 			display += "\n";
 		}
 
 		JOptionPane.showMessageDialog(null, display);
+		
+		System.exit(0);
 	}
 
 	public static void main(String[] args)
@@ -167,8 +170,8 @@ public class EVoting
 		{
 			switch(choice)
 			{
-				case 0: login(candidates);
-				case 1: displayElectionResults();
+				case 0: login(candidates); break;
+				case 1: displayElectionResults(); break;
 			}
 			choice = startMenu();
 		}

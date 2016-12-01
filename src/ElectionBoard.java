@@ -164,9 +164,19 @@ public class ElectionBoard {
 		return answer;
 	}
 	
-	public BigInteger encryptVote(BigInteger votes)
+	public BigInteger[] encryptVote(BigInteger votes)
 	{
-		BigInteger answer = encrypt.Encryption(votes);
+		BigInteger[] answer = encrypt.Encryption(votes);
 		return answer;
+	}
+	
+	public BigInteger getPaillierN()
+	{
+		return encrypt.getN();
+	}
+	
+	public BigInteger getPaillierG()
+	{
+		return encrypt.getG();
 	}
 }

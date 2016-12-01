@@ -10,9 +10,9 @@ public class Voter
 	private Boolean didVote = false;
 	private BigInteger rsaEncryptedVote = null;
 	private BigInteger paillierVote = null;
-	private BigInteger vote = null;
+	private BigInteger clearVote = null;
 	private BigInteger signedVote = null;
-	private BigInteger n, g;
+	private BigInteger n, g, x;
 //	private static ElectionBoard EB;
 //	private static BulletinBoard BB;
 
@@ -82,17 +82,16 @@ public class Voter
 		if (!didVote)
 		{
 			didVote = true;
-			this.vote = vote;
-			paillierVote = EB.encryptVote(vote);
+			clearVote = vote;
+			BigInteger[] encrypted = EB.encryptVote(vote);
+			paillierVote = encrypted[0];
+			x = encrypted[1];
 			
-			System.out.println("vote: " + vote);
 			BigInteger e = EB.getE();
 			BigInteger n = EB.getN();
 
 	        BigInteger r = new BigInteger(512, new Random());
-	        System.out.println(e.intValue());
 	        rsaEncryptedVote = vote.multiply(r.pow(e.intValue())).mod(n);
-	        System.out.println("encrypt: " + rsaEncryptedVote);
 		}
 		
 		else
@@ -112,14 +111,17 @@ public class Voter
 	public BigInteger[] zkp(BigInteger e)
 	{
 		BigInteger[] answer = new BigInteger[3];
-        BigInteger r = new BigInteger(512, new Random()).mod(n);
-        BigInteger s = new BigInteger(512, new Random()).mod(n);
-
-        BigInteger x = new BigInteger(512, new Random()).mod(n);
+        BigInteger r = new BigInteger(8, new Random()).mod(n);
+        BigInteger s = new BigInteger(8, new Random()).mod(n);
+        System.out.println("second");        
         
-        answer[0] = g.pow(r.intValue()).multiply(s.pow(n.intValue())).mod(n.pow(2));
-        answer[1] = r.subtract(e.multiply(vote));
-        answer[2] = s.multiply(x.pow(-e.intValue())).multiply(g.pow((r.subtract(e.multiply(vote)).intValue())));
+        System.out.println("S: "+s+" x: "+x+" e: "+e);
+        
+        answer[0] = g.modPow(r, n.pow(2)).multiply(s.modPow(n, n.pow(2)));
+        answer[0] = answer[0].mod(n.pow(2));
+        
+        answer[1] = r.subtract(e.multiply(clearVote));
+        answer[2] = s.multiply(x.pow(e.intValue()));
 	
         return answer;
 	}

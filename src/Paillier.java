@@ -64,7 +64,7 @@ public class Paillier {
      * Constructs an instance of the Paillier cryptosystem with 512 bits of modulus and at least 1-2^(-64) certainty of primes generation.
      */
     public Paillier() {
-        KeyGeneration(512, 64);
+        KeyGeneration(16, 64);
     }
 
     /**
@@ -106,10 +106,13 @@ public class Paillier {
      * @param m plaintext as a BigInteger
      * @return ciphertext as a BigInteger
      */
-    public BigInteger Encryption(BigInteger m) {
-        BigInteger r = new BigInteger(bitLength, new Random());
-        return g.modPow(m, nsquare).multiply(r.modPow(n, nsquare)).mod(nsquare);
-
+    public BigInteger[] Encryption(BigInteger m) {
+    	BigInteger[] answer = new BigInteger[2];
+        BigInteger r = new BigInteger(bitLength/2, new Random());
+        answer[0] = g.modPow(m, nsquare).multiply(r.modPow(n, nsquare)).mod(nsquare);
+        answer[1] = r;
+        
+        return answer;
     }
 
     /**
@@ -119,7 +122,9 @@ public class Paillier {
      */
     public BigInteger Decryption(BigInteger c) {
         BigInteger u = g.modPow(lambda, nsquare).subtract(BigInteger.ONE).divide(n).modInverse(n);
-        return c.modPow(lambda, nsquare).subtract(BigInteger.ONE).divide(n).multiply(u).mod(n);
+        BigInteger answer = c.modPow(lambda, nsquare).subtract(BigInteger.ONE).divide(n).multiply(u).mod(n);
+        System.out.println(answer);
+        return answer;
     }
     
     public BigInteger getN()
