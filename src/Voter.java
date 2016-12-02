@@ -177,24 +177,58 @@ public class Voter
 	
 	public BigInteger[] zkpPaillier(BigInteger e)
 	{
-		BigInteger[] answer = new BigInteger[3];
-		BigInteger r = new BigInteger(8, new Random()).mod(n);
+		BigInteger[] answer = new BigInteger[9];
+		BigInteger r = new BigInteger(16, new Random()).mod(n);
 		// BigInteger s = new BigInteger(8, new Random()).mod(n);
 		// s must be coprime to n
-		BigInteger s;
+		BigInteger y = new BigInteger(16, new Random()).mod(n);
+		BigInteger nSquared = n.pow(2);
+		BigInteger h1, h2, s, newRandom;
 		do {
-			s = new BigInteger(8, new Random()).mod(n);
-		} while (s.compareTo(BigInteger.ZERO) == 0);
+			s = new BigInteger(16, new Random()).mod(n);
+			System.out.println(1);
+		} while(s.divide(s.gcd(n)).multiply(n).compareTo(BigInteger.ONE) == 0);
+		
+		do {
+			h1 = new BigInteger(16, new Random()).mod(n);
+			System.out.println(2);
+		} while(h1.divide(h1.gcd(nSquared)).multiply(nSquared).compareTo(BigInteger.ONE) == 0);
+		
+		do {
+			h2 = new BigInteger(16, new Random()).mod(n);
+			System.out.println(3);
+		} while(h2.divide(h2.gcd(nSquared)).multiply(nSquared).compareTo(BigInteger.ONE) == 0);
+		
+		do {
+			newRandom = new BigInteger(16, new Random()).mod(n);
+			System.out.println(4);
+		} while (newRandom.compareTo(BigInteger.ZERO) == 0);
+		
 		System.out.println("second");
 		
 		System.out.println("S: "+s+" x: "+x+" e: "+e);
 		
-		answer[0] = g.modPow(r, n.pow(2)).multiply(s.modPow(n, n.pow(2))).mod(n.pow(2));
-		answer[0] = answer[0].mod(n.pow(2));
+		BigInteger u = g.modPow(r, n.pow(2)).multiply(s.modPow(n, n.pow(2))).mod(n.pow(2));
+		u = u.mod(n.pow(2));
 		
-		answer[1] = r.add(e.multiply(clearVote));
-		answer[2] = s.multiply(x.pow(e.intValue()));
-	
+		BigInteger v = r.add(e.multiply(clearVote));
+		BigInteger w = s.multiply(x.pow(e.intValue()));
+		
+		BigInteger d = (u.modPow(r, nSquared).multiply(newRandom.modPow(n, nSquared))).mod(nSquared);
+		
+		BigInteger a = (u.modPow(y, nSquared)).multiply(h2.modPow(n, nSquared)).mod(nSquared);
+		BigInteger b = (g.modPow(y, nSquared)).multiply(h1.modPow(n, nSquared)).mod(nSquared);
+		BigInteger l = y.add(e.multiply(r)).mod(n);
+		
+		BigInteger t = ((y.add(e.multiply(r))).subtract(l)).divide(n);
+		
+		BigInteger z = h1.multiply(s.pow(e.intValue())).multiply(g.pow(t.intValue()));
+		BigInteger f = h2.multiply(u.pow(t.intValue())).multiply(newRandom.pow(e.intValue()));
+		
+		System.out.println("h1: "+h1+" h2: "+h2+" y: "+y+" r: "+r+" newR: "+newRandom+" t: "+t);
+		
+		answer[0] = u; answer[1] = a; answer[2] = b; answer[3] = d; answer[4] = l; answer[5] = z; answer[6] = f; answer[7] = v; answer[8] = w;
+			
 		return answer;
 	}
 }
