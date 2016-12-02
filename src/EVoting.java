@@ -179,22 +179,20 @@ public class EVoting
 		String tally = results.toString();
 		System.out.println("tally: "+tally);
 		
-		// for(int i = 0; i < tally.length(); i++)
-		// {
-		// 	// Order of tallies will be reversed, so candidate names must
-		// 	// be displayed in reverse order.
-		// 	display += candidates.get(tally.length()-1-i) + ": " + tally.charAt(i);
-		// 	display += "\n";
-		// }
-
+		// Create a char array and fill it with 0s to represent
+		// the initial number of each candidate's vote count.
 		char[] numVotes = new char[candidates.size()];
 		for(int i = 0; i < numVotes.length; i++) {
 			numVotes[i] = '0';
 		}
+
+		// Order of tallies are are the reverse of the order of the names
+		// on the buttons. Fill out the array with the correct tallies.
 		for(int i = 0, j = candidates.size()-1; i < tally.length(); i++, j--) {
 			numVotes[j] = tally.charAt(i);
 		}
 
+		// Display the results
 		for(int i = 0; i < numVotes.length; i++) {
 			display += candidates.get(i) + ": " + numVotes[i];
 			display += "\n";
