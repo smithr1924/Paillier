@@ -4,10 +4,18 @@ Final group project for Cryptography and Network Security I. Implementing a voti
 
 * There are six (6) voters and two (2) candidates, represented in the text files included in this repository.
 
-Download and Install Instructions:
-----------------------------------
+Download and Execution Instructions:
+------------------------------------
 
-1. 
+To run the JAR file:
+
+1. Simply download the JAR file and run it on a system capable of running Java [VERSION NUMBER].
+
+To build from source:
+
+1. Clone or download the repo on via the button on this page.
+2. Open in Eclipse.
+3. Run the EVoting.java class.
 
 
 Open-Source Components
