@@ -117,8 +117,7 @@ public class Voter
 		BigInteger[] answer = new BigInteger[3];
 		// BigInteger s = new BigInteger(8, new Random()).mod(n);
 		// s must be coprime to n
-//		BigInteger x = this.r;
-		BigInteger x = new BigInteger("5");
+		BigInteger x = this.r;
 //		BigInteger s = r.modPow(n, n.pow(2));
 		BigInteger s = new BigInteger("4");
 //		BigInteger r = new BigInteger(8, new Random()).mod(n);

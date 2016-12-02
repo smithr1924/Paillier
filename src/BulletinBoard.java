@@ -22,8 +22,8 @@ public class BulletinBoard {
 	
 	public boolean receiveVote(Voter voter)
 	{
-//		BigInteger signedVote = voter.getSignedVote();
-		BigInteger signedVote = new BigInteger("7");
+		BigInteger signedVote = voter.getSignedVote();
+		System.out.println("SIGNED VOTE: " + signedVote);
 		BigInteger vote = voter.getPaillierVote();
 		
 		if (zkpSigned(voter, signedVote))

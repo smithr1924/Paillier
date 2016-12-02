@@ -114,10 +114,9 @@ public class Paillier {
         
         
 //        answer[0] = g.modPow(m, nsquare).multiply(x.modPow(n, nsquare)).mod(nsquare);
-//        answer[1] = x;
+        answer[1] = x;
         
         answer[0] = new BigInteger("7");
-        answer[1] = new BigInteger("5");
         
         return answer;
     }

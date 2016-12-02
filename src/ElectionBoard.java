@@ -83,7 +83,6 @@ public class ElectionBoard {
         n = p.multiply(q);
         BigInteger phiN = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 
-//        e = phiN.subtract(BigInteger.ONE);
         do {
         	e = new BigInteger(12, 64, new Random());
         } while (e.compareTo(phiN) >= 0);
