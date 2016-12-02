@@ -137,15 +137,19 @@ public class EVoting
 	// Send the vote to the bulletin board.
 	public static void sendVoteToBB(Voter voter)
 	{
+		String dialog = "";
 		if (BB.receiveVote(voter))
 		{
 			voter.successfulVote();
-			JOptionPane.showMessageDialog(null, "Thanks for voting "+voter.getName()+"!\n Have a nice day!");
+			dialog += "Thanks for voting "+voter.getName()+"!\n Have a nice day!"
+			JOptionPane.showMessageDialog(null, dialog);
 		}
 		
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Sorry "+voter.getName()+", but there was a problem with your vote!\n Please try again.");
+			dialog += "Sorry "+voter.getName()+", but there was a problem";
+			dialog += " with your vote!\n Please try again.";
+			JOptionPane.showMessageDialog(null, dialog, JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
