@@ -37,14 +37,14 @@ public class BulletinBoard {
 			
 			else
 			{
-				System.out.println("Paillier vote did not pass the ZKP test! Vote rejected.");
+				System.out.println("Paillier encrypted vote did not pass the ZKP! Vote rejected.");
 				return false;
 			}
 		}
 		
 		else
 		{
-			System.out.println("Signed vote did not pass the ZKP test! Vote rejected.");
+			System.out.println("Signed vote did not pass the ZKP! Vote rejected.");
 			return false;
 		}
 	}

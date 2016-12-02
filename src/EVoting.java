@@ -113,15 +113,12 @@ public class EVoting
 					return;
 				}
 			}
-			
-			else {
-				String dialog = "Voter does not exist!";
-				String title = "Error";
-				JOptionPane.showMessageDialog(null, dialog, title,
-											  JOptionPane.WARNING_MESSAGE);
-				return;
-			}
 		}
+		
+		String dialog = "Voter does not exist!";
+		String title = "Error";
+		JOptionPane.showMessageDialog(null, dialog, title,
+									  JOptionPane.WARNING_MESSAGE);
 	}
 
 	// Function that allows the user to vote, converts the vote to the 
@@ -178,14 +175,6 @@ public class EVoting
 		List<String> candidates = EB.getCandidates();
 		String tally = results.toString();
 		System.out.println("tally: "+tally);
-		
-		// for(int i = 0; i < tally.length(); i++)
-		// {
-		// 	// Order of tallies will be reversed, so candidate names must
-		// 	// be displayed in reverse order.
-		// 	display += candidates.get(tally.length()-1-i) + ": " + tally.charAt(i);
-		// 	display += "\n";
-		// }
 
 		char[] numVotes = new char[candidates.size()];
 		for(int i = 0; i < numVotes.length; i++) {
