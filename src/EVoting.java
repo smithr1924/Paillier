@@ -58,7 +58,7 @@ public class EVoting
 		// String[] encrypt = {"Print", "Encrypt1", "Decrypt1", "Encrypt2",
 		// 		"Decrypt2", "Exit"};
 		int input = (JOptionPane.showOptionDialog(null, 
-			"Vote for whom?", "Print",
+			"Vote for whom?", "Candidates",
 			0, 3, null, candidates, null));
 		return input;
 	}
@@ -72,7 +72,7 @@ public class EVoting
 		// 	"What would you like to do?", "Print",
 		// 	0, 3, null, menu, null));
 		int input = (JOptionPane.showOptionDialog(null, 
-			"What would you like to do?", "Print",
+			"What would you like to do?", "E-Voting Login",
 			0, JOptionPane.PLAIN_MESSAGE, null, menu, null));
 		return input;
 	}
