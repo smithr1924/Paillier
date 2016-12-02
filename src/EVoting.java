@@ -114,9 +114,10 @@ public class EVoting
 			}
 			else {
 				String dialog = "Voter does not exist!";
-					String title = "Error";
-					JOptionPane.showMessageDialog(null, dialog, title,
-												  JOptionPane.WARNING_MESSAGE);
+				String title = "Error";
+				JOptionPane.showMessageDialog(null, dialog, title,
+											  JOptionPane.WARNING_MESSAGE);
+				return;
 			}
 		}
 	}
