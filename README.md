@@ -1,5 +1,4 @@
 # Secure E-Voting with Paillier Encryption
-----------------------------------------
 
 Final group project for Cryptography and Network Security I. Implementing a voting system using Paillier encryption, zero-knowledge proofs, and blind signatures.
 
