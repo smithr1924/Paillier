@@ -1,3 +1,13 @@
+/************************************************************
+Voter.java
+
+Written by Ben Abramowitz, Ryan Smith, and Nicolaas Verbeek.
+Class represents a Voter and contains necessary private keys
+and functions to interact with the ElectionBoard and
+BulletinBoard.
+
+
+************************************************************/
 import java.io.File;
 import java.math.*;
 import java.util.ArrayList;
@@ -92,6 +102,7 @@ public class Voter
 		return new Integer(id).intValue();
 	}
 	
+	// Check if the user has voted or not.
 	public Boolean getVoteStatus()
 	{
 		return new Boolean(didVote);
@@ -117,6 +128,9 @@ public class Voter
 		didVote = true;
 	}
 	
+	// Function called when the voter casts their vote. Verifies that
+	// the voter has not already voted and sends the vote off to be
+	// signed.
 	public void didVote(BigInteger vote, ElectionBoard EB)
 	{
 		if (!didVote)
@@ -175,6 +189,8 @@ public class Voter
 //		return answer;
 //	}
 	
+	// Function to calculate u in order to send to the BulletinBoard
+	// for use in the Zero-Knowledge Proofs.
 	public BigInteger getU()
 	{
 		zkpr = new BigInteger(16, new Random()).mod(n);

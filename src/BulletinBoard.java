@@ -1,3 +1,12 @@
+/************************************************************
+BulletinBoard.java
+
+Written by Ben Abramowitz, Ryan Smith,and Nicolaas Verbeek.
+Class represents the BulletinBoard and contains functions to
+count the votes and query the user during the ZKP.
+
+
+************************************************************/
 import java.math.BigInteger;
 import java.util.Random;
 

@@ -1,3 +1,13 @@
+/************************************************************
+ElectionBoard.java
+
+Written by Ben Abramowitz, Ryan Smith, and Nicolaas Verbeek.
+Class represents a ElectionBoard and contains necessary
+functions to sign the votes. Also contains the list of
+registered voters and of candidates.
+
+
+************************************************************/
 import java.io.File;
 import java.math.*;
 import java.util.*;
