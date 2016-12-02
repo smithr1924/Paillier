@@ -1,3 +1,15 @@
+/************************************************************
+EVoting.java
+
+Written by Ben Abramowitz, Ryan Smith,and Nicolaas Verbeek.
+Class represents the engine that allows a user to interact 
+with a UI and vote for candidates. Controls program flow and
+contains instances of the other classes we created for the
+project, ElectionBoard and BulletinBoard.
+
+
+
+************************************************************/
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
@@ -7,7 +19,6 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
@@ -40,16 +51,6 @@ public class EVoting
 		// 		(new Font("Comic Sans MS", Font.BOLD, 14)));
 	}
 
-	public static int candidateMenuHARDCODE()
-	{
-		String[] encrypt = {"Print", "Encrypt1", "Decrypt1", "Encrypt2",
-				"Decrypt2", "Exit"};
-		int input = (JOptionPane.showOptionDialog(null, 
-			"What do you want to do?", "Print",
-			0, 3, null, encrypt, null));
-		return input;
-	}
-
 	// Menu with buttons containing candidate names. Returns the
 	// user's input
 	public static int candidateMenu(String[] candidates)
@@ -73,16 +74,16 @@ public class EVoting
 		return input;
 	}
 
-	// Menu that allows the user to input their name and vote
+	// Menu that allows the user to input their name, checks if the
+	// user is valid and hasn't voted already, and lets them vote.
 	public static void login(String[] candidates)
 	{
 		String username = JOptionPane.showInputDialog("What is your voter name?");
 
 		// Handle invalid names, people who have already voted
-		// If that's valid, call vote method, maybe with their name?
-		
 		List<Voter> voters = EB.getVoters();
 		Voter thisVoter;
+		
 		for (int i = 0; i < EB.numVoters(); i++)
 		{
 			if (voters.get(i).getName().equals(username))
@@ -90,26 +91,30 @@ public class EVoting
 				thisVoter = voters.get(i);
 				if (voters.get(i).getVoteStatus())
 				{
+					// Bounce the user back if they've already voted
 					System.out.println("User "+thisVoter.getName()+" already voted");
 					return;
 				}
 				
 				else
 				{
+					// User is valid and hasn't voted; allow them
+					// to vote.
 					vote(thisVoter, candidates);
 				}
 			}
 		}
-
 	}
 
+	// Function that allows the user to vote, converts the vote to the 
 	public static void vote(Voter voter, String[] candidates)
 	{
 		int vote = candidateMenu(candidates);
 
 		vote = (int)(Math.pow(10.0, (double)vote));
 
-		// Process the vote
+		// Send the vote off to be blind signed by the
+		// Election Board.
 		getVoteBlindSigned(voter, vote);
 	}
 
@@ -144,28 +149,35 @@ public class EVoting
 		
 		for(int i = 0; i < tally.length(); i++)
 		{
+			// Order of tallies will be reversed, so candidate names must
+			// be displayed in reverse order.
 			display += candidates.get(tally.length()-1-i) + ": " + tally.charAt(i);
 			display += "\n";
 		}
 
 		JOptionPane.showMessageDialog(null, display);
 		
+		// Quit the program after the election results are displayed;
+		// election is over.
 		System.exit(0);
 	}
 
 	public static void main(String[] args)
 	{
-		changeJOP(); // Uncomment this to enforce the colors/fonts
+		changeJOP();
 		
+		// Singleton instances of the Election Board and the Bulletin
+		// Board.
 		EB = ElectionBoard.getInstance();
 		BB = BulletinBoard.getInstance();
 		
 		BB.setSize(EB.numVoters());
-		// Repeat the login screen as often as necessary
 		
 		String[] candidates = new String[EB.numCandidates()];
 		candidates = EB.getCandidates().toArray(candidates);
+
 		int choice = startMenu();
+		// Repeat the login screen as often as necessary
 		while(choice != 2)
 		{
 			switch(choice)
@@ -175,10 +187,5 @@ public class EVoting
 			}
 			choice = startMenu();
 		}
-
-		// force the final tally somehow, print election results to
-		// the console
-
-		// allow user to verify that their vote was obtained correctly
 	}
 }
