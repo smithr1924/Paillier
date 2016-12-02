@@ -1,0 +1,43 @@
+public Boolean zkpPaillier(Voter voter)
+	{
+		BigInteger vote = voter.getPaillierVote();
+		BigInteger u = voter.getU();
+		Boolean answer = true;
+		
+		for (int i = 0; i < 20; i++)
+		{
+			BigInteger e;
+			do {
+				e = new BigInteger(8, new Random()).mod(EB.getPaillierN());
+			} while (e == BigInteger.ZERO);
+			BigInteger[] results = voter.zkpPaillier(e);
+			BigInteger v = results[0];
+			BigInteger w = results[1];
+			BigInteger g = EB.getPaillierG();
+			System.out.println("g: "+g+" c: "+vote+" u: "+u+" vote: "+vote+" w: "+ w);
+	
+			BigInteger n = EB.getPaillierN();
+			BigInteger nSquared = n.pow(2);	
+			System.out.println("n2:"+nSquared);
+			BigInteger nicosInt = g.modPow(v, nSquared);
+			System.out.println("g^v mod n^2: "+nicosInt);
+			nicosInt = nicosInt.multiply(vote.modPow(e.negate(), nSquared));
+			System.out.println("vote^e mod n^2: " + vote.modPow(e.negate(), nSquared));
+			nicosInt = nicosInt.mod(nSquared);
+			nicosInt = nicosInt.multiply(w.modPow(n, nSquared)).mod(nSquared);
+			System.out.println("w^n mod n^2:"+nicosInt);
+			nicosInt = nicosInt.mod(nSquared);
+			
+			System.out.println("nicosInt: "+nicosInt);
+			System.out.println("u:        "+u);
+	
+			answer = nicosInt.equals(u);
+	
+			System.out.println("nicosInt == u: " + answer);
+			if (answer == false)
+			{
+				return false;
+			}
+		}
+
+		return answer;

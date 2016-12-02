@@ -149,31 +149,31 @@ public class Voter
 		}
 	}
 	
-	public BigInteger[] zkpSigned(BigInteger e)
-	{
-		BigInteger[] answer = new BigInteger[3];
-		// BigInteger s = new BigInteger(8, new Random()).mod(n);
-		// s must be coprime to n
-		BigInteger x = this.r;
-//		BigInteger x = new BigInteger("5");
-		System.out.println("x: "+x);
-		BigInteger s = r.modPow(n, n.pow(2));
-//		BigInteger s = new BigInteger("4");
-		BigInteger r = new BigInteger(8, new Random()).mod(n);
-//		BigInteger r = new BigInteger("1");
-		BigInteger g = ElectionBoard.getInstance().getE();
-//		BigInteger g = new BigInteger("7");
-		BigInteger n = ElectionBoard.getInstance().getN();
-//		BigInteger n = new BigInteger("6");
-		
-		answer[0] = g.modPow(r, n.pow(2)).multiply(s.modPow(n, n.pow(2)));
-		answer[0] = answer[0].mod(n.pow(2));
-		
-		answer[1] = r.add(e.multiply(clearVote));
-		answer[2] = s.multiply(x.pow(e.intValue()));
-	
-		return answer;
-	}
+//	public BigInteger[] zkpSigned(BigInteger e)
+//	{
+//		BigInteger[] answer = new BigInteger[3];
+//		// BigInteger s = new BigInteger(8, new Random()).mod(n);
+//		// s must be coprime to n
+//		BigInteger x = this.r;
+////		BigInteger x = new BigInteger("5");
+//		System.out.println("x: "+x);
+//		BigInteger s = r.modPow(n, n.pow(2));
+////		BigInteger s = new BigInteger("4");
+//		BigInteger r = new BigInteger(8, new Random()).mod(n);
+////		BigInteger r = new BigInteger("1");
+//		BigInteger g = ElectionBoard.getInstance().getE();
+////		BigInteger g = new BigInteger("7");
+//		BigInteger n = ElectionBoard.getInstance().getN();
+////		BigInteger n = new BigInteger("6");
+//		
+//		answer[0] = g.modPow(r, n.pow(2)).multiply(s.modPow(n, n.pow(2)));
+//		answer[0] = answer[0].mod(n.pow(2));
+//		
+//		answer[1] = r.add(e.multiply(clearVote));
+//		answer[2] = s.multiply(x.pow(e.intValue()));
+//	
+//		return answer;
+//	}
 	
 	public BigInteger[] zkpPaillier(BigInteger e)
 	{
