@@ -140,12 +140,12 @@ public class EVoting
 		if (BB.receiveVote(voter))
 		{
 			voter.successfulVote();
-			
+			JOptionPane.showMessageDialog(null, "Thanks for voting "+voter.getName()+"!\n Have a nice day!");
 		}
 		
 		else
 		{
-			
+			JOptionPane.showMessageDialog(null, "Sorry "+voter.getName()+", but there was a problem with your vote!\n Please try again.");
 		}
 	}
 
