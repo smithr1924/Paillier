@@ -110,8 +110,10 @@ public class EVoting
 					// User is valid and hasn't voted; allow them
 					// to vote.
 					vote(thisVoter, candidates);
+					return;
 				}
 			}
+			
 			else {
 				String dialog = "Voter does not exist!";
 				String title = "Error";
@@ -185,15 +187,15 @@ public class EVoting
 		// 	display += "\n";
 		// }
 
-		String[] numVotes = new String[candidates.size()];
-		for(int i = 0; i < numVotes.size(); i++) {
-			numVotes[i] = "0";
+		char[] numVotes = new char[candidates.size()];
+		for(int i = 0; i < numVotes.length; i++) {
+			numVotes[i] = '0';
 		}
 		for(int i = 0, j = candidates.size()-1; i < tally.length(); i++, j--) {
 			numVotes[j] = tally.charAt(i);
 		}
 
-		for(int i = 0; i < numVotes.size(); i++) {
+		for(int i = 0; i < numVotes.length; i++) {
 			display += candidates.get(i) + ": " + numVotes[i];
 			display += "\n";
 		}
