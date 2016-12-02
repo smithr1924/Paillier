@@ -10,7 +10,7 @@ Download and Execution Instructions:
 To run the JAR file:
 
 1. Simply download the JAR file and run it on a system capable of running Java [VERSION NUMBER].
-2. When prompted for a voter name, the list of legal voters specified in the ```voters.txt``` file are as follows: ```a a```, ```b c```, ```c c```, ```d d```, ```e e```, ```f f```.
+2. When prompted for a voter name, the list of legal voters specified in the ```voters.txt``` file are as follows: ```a a```, ```b c```, ```c c```, ```d d```, ```e e```, ```f f```. Log in with one of these users in order to vote.
 
 To build from source:
 
