@@ -174,7 +174,7 @@ public class EVoting
 		BigInteger results = EB.decryptVotes(encryptedResults);
 		String display = "";
 		List<String> candidates = EB.getCandidates();
-		String tally = results.toString();
+		String tally = "0"+results.toString();
 		System.out.println("tally: "+tally);
 		
 		for(int i = 0; i < tally.length(); i++)
