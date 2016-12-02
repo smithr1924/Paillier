@@ -12,7 +12,7 @@ public class Voter
 	private BigInteger paillierVote = null;
 	private BigInteger clearVote = null;
 	private BigInteger signedVote = null;
-	private BigInteger n, g, x;
+	private BigInteger n, g, x, r;
 //	private static ElectionBoard EB;
 //	private static BulletinBoard BB;
 
@@ -77,11 +77,15 @@ public class Voter
 		return new BigInteger(paillierVote.toString());
 	}
 	
+	public void successfulVote()
+	{
+		didVote = true;
+	}
+	
 	public void didVote(BigInteger vote, ElectionBoard EB)
 	{
 		if (!didVote)
 		{
-			didVote = true;
 			clearVote = vote;
 			BigInteger[] encrypted = EB.encryptVote(vote);
 			paillierVote = encrypted[0];
@@ -90,7 +94,7 @@ public class Voter
 			BigInteger e = EB.getE();
 			BigInteger n = EB.getN();
 
-			BigInteger r = new BigInteger(512, new Random());
+			r = new BigInteger(512, new Random());
 			rsaEncryptedVote = vote.multiply(r.pow(e.intValue())).mod(n);
 		}
 		
@@ -108,7 +112,27 @@ public class Voter
 		}
 	}
 	
-	public BigInteger[] zkp(BigInteger e)
+	public BigInteger[] zkpSigned(BigInteger e)
+	{
+		BigInteger[] answer = new BigInteger[3];
+		BigInteger r = new BigInteger(8, new Random()).mod(n);
+		// BigInteger s = new BigInteger(8, new Random()).mod(n);
+		// s must be coprime to n
+		BigInteger s = new BigInteger("29");
+		BigInteger x = this.r;
+		BigInteger g = ElectionBoard.getInstance().getE();
+		BigInteger n = ElectionBoard.getInstance().getN();
+		
+		answer[0] = g.modPow(r, n.pow(2)).multiply(s.modPow(n, n.pow(2)));
+		answer[0] = answer[0].mod(n.pow(2));
+		
+		answer[1] = r.subtract(e.multiply(clearVote));
+		answer[2] = s.multiply(x.pow(e.intValue()));
+	
+		return answer;
+	}
+	
+	public BigInteger[] zkpPaillier(BigInteger e)
 	{
 		BigInteger[] answer = new BigInteger[3];
 		BigInteger r = new BigInteger(8, new Random()).mod(n);

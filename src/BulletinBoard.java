@@ -21,13 +21,32 @@ public class BulletinBoard {
 		matrix = new BigInteger[n];
 	}
 	
-	public void receiveVote(Voter voter)
+	public boolean receiveVote(Voter voter)
 	{
 		BigInteger signedVote = voter.getSignedVote();
 		BigInteger vote = voter.getPaillierVote();
 		
-		if (zkpSigned(voter, vote))
-			matrix[voter.getID()] = vote;
+		if (zkpSigned(voter, signedVote))
+		{
+			if (zkpPaillier(voter, vote))
+			{
+				matrix[voter.getID()] = vote;
+				System.out.println("woop");
+				return true;
+			}
+			
+			else
+			{
+				System.out.println("Paillier vote did not pass the ZKP test! Vote rejected.");
+				return false;
+			}
+		}
+		
+		else
+		{
+			System.out.println("Signed vote did not pass the ZKP test! Vote rejected.");
+			return false;
+		}
 	}
 	
 	public BigInteger tallyVotes(BigInteger n)
@@ -45,44 +64,68 @@ public class BulletinBoard {
 	// Zero Knowledge Proof function
 	// Don't even know if it will be necessary, but it's here
 	// if we need it.
-	public Boolean zkpPaillier(Voter voter, BigInteger vote)
+	public Boolean zkpSigned(Voter voter, BigInteger vote)
 	{
+		BigInteger e = new BigInteger(2, new Random()).mod(EB.getPaillierN());
+		BigInteger[] results = voter.zkpSigned(e);
+		System.out.println("here");
+		BigInteger u = results[0];
+		BigInteger v = results[1];
+		BigInteger w = results[2];
+		BigInteger g = EB.getE();
+		System.out.println("g: "+EB.getPaillierG()+" c: "+vote+" w: "+ w+" u: "+u);
+		System.out.println("here1");
+
+		BigInteger n = EB.getN();
+		BigInteger nSquared = n.pow(2);
 		
-		
-		return true;
+		System.out.println("n2:"+nSquared);
+
+		BigInteger nicosInt = g.modPow(v, nSquared);
+		System.out.println("g^v mod n^2: "+nicosInt);
+		nicosInt = nicosInt.multiply(vote.modPow(e.negate(), nSquared));
+		System.out.println("vote^e mod n^2: " + vote.modPow(e.negate(), nSquared));
+		nicosInt = nicosInt.mod(nSquared);
+		nicosInt = nicosInt.multiply(w.modPow(n, nSquared));
+		System.out.println("w^n mod n^2:"+nicosInt);
+		nicosInt = nicosInt.mod(nSquared);
+
+		Boolean answer = nicosInt.equals(u);
+
+		System.out.println("u:    "+u);
+		System.out.println("newU: "+nicosInt);
+		System.out.println("nicosInt == u: " + answer);
+
+		return answer;
 	}
 	
 	// Zero Knowledge Proof function
 	// Don't even know if it will be necessary, but it's here
 	// if we need it.
-	public Boolean zkpSigned(Voter voter, BigInteger vote)
+	public Boolean zkpPaillier(Voter voter, BigInteger vote)
 	{
-
 		BigInteger e = new BigInteger(2, new Random()).mod(EB.getPaillierN());
-		BigInteger[] results = voter.zkp(e);
-		System.out.println("here");
+		BigInteger[] results = voter.zkpPaillier(e);
 		BigInteger u = results[0];
 		BigInteger v = results[1];
 		BigInteger w = results[2];
-		System.out.println("g: "+EB.getPaillierG()+" c: "+vote+" w: "+ w+" u: "+u);
-		System.out.println("here1");
+		BigInteger g = EB.getPaillierG();
+		System.out.println("g: "+g+" c: "+vote+" w: "+ w+" u: "+u+" vote: "+vote);
 
 		BigInteger n = EB.getPaillierN();
-		BigInteger nSquared = n.pow(2);
-		
+		BigInteger nSquared = n.pow(2);	
 		System.out.println("n2:"+nSquared);
-
-		BigInteger nicosInt = EB.getPaillierG().modPow(v, nSquared);
-		System.out.println("int: "+nicosInt);
+		BigInteger nicosInt = g.modPow(v, nSquared);
+		System.out.println("g^v mod n^2: "+nicosInt);
 		nicosInt = nicosInt.multiply(vote.modPow(e.negate(), nSquared));
-		System.out.println("vote.modPow(e, nSquared):" + vote.modPow(e.negate(), nSquared));
+		System.out.println("vote^e mod n^2: " + vote.modPow(e.negate(), nSquared));
 		nicosInt = nicosInt.mod(nSquared);
-		System.out.println("int:"+nicosInt);
-
 		nicosInt = nicosInt.multiply(w.modPow(n, nSquared));
-		System.out.println("int:"+nicosInt);
+		System.out.println("w^n mod n^2:"+nicosInt);
 		nicosInt = nicosInt.mod(nSquared);
-		System.out.println("int:"+nicosInt);
+		
+		System.out.println("nicosInt: "+nicosInt);
+		System.out.println("u:        "+u);
 
 		Boolean answer = nicosInt.equals(u);
 

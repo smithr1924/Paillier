@@ -137,7 +137,16 @@ public class EVoting
 	// Send the vote to the bulletin board.
 	public static void sendVoteToBB(Voter voter)
 	{
-		BB.receiveVote(voter);
+		if (BB.receiveVote(voter))
+		{
+			voter.successfulVote();
+			
+		}
+		
+		else
+		{
+			
+		}
 	}
 
 	// Show message dialog containing the results of the election.
