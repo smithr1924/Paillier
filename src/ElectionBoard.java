@@ -159,10 +159,16 @@ public class ElectionBoard {
 	// Receive encrypted tallies of votes, decrypt and announce
 	// Params:		votes is an array of BigIntegers representing the tallied votes for each candidate.
 	//					votes[0] is the first candidates tally and so on.
-	public BigInteger decryptVotes(BigInteger votes)
+	public String decryptVotes(BigInteger votes)
 	{
 		BigInteger answer = encrypt.Decryption(votes);
-		return answer;
+		String ansString = answer.toString();
+		if (answer.compareTo(new BigInteger("100")) < 0) 
+		{
+			ansString = "0"+ansString;
+//			answer = answer.multiply(new BigInteger("10"));
+		}
+		return ansString;
 	}
 	
 	public BigInteger[] encryptVote(BigInteger votes)

@@ -30,7 +30,7 @@ public class BulletinBoard {
 			if (zkpPaillier(voter))
 			{
 				matrix[voter.getID()] = voter.getPaillierVote();
-				System.out.println("woop");
+//				System.out.println("woop");
 				return true;
 			}
 			
@@ -115,49 +115,49 @@ public class BulletinBoard {
 		{
 			BigInteger vote = voter.getPaillierVote();
 			BigInteger e;
-			System.out.println("this loops");
+//			System.out.println("this loops");
 			do {
 				e = new BigInteger(8, new Random()).mod(EB.getPaillierN());
 			} while (e.equals(BigInteger.ZERO));
+			BigInteger u = voter.getU();
 			BigInteger[] results = voter.zkpPaillier(e);
-			BigInteger u = results[0];
-			BigInteger v = results[7];
-			BigInteger w = results[8];
-			BigInteger d = results[3];
-			BigInteger a = results[1];
-			BigInteger b = results[2];
-			BigInteger l = results[4];
-			BigInteger z = results[5];
-			BigInteger f = results[6];
+			BigInteger v = results[6];
+			BigInteger w = results[7];
+			BigInteger d = results[2];
+			BigInteger a = results[0];
+//			BigInteger b = results[1];
+			BigInteger l = results[3];
+//			BigInteger z = results[4];
+			BigInteger f = results[5];
 			BigInteger g = EB.getPaillierG();
-			System.out.println("g: "+g+" c: "+vote+" u: "+u+" vote: "+vote+" w: "+ w+" d: "+d+" z: "+z);
-			System.out.println("f: "+f+" l: "+l+" z: "+z+" a: "+a+" b: "+b);
+//			System.out.println("g: "+g+" c: "+vote+" u: "+u+" vote: "+vote+" w: "+ w+" d: "+d+" z: "+z);
+//			System.out.println("f: "+f+" l: "+l+" z: "+z+" a: "+a+" b: "+b);
 			
 			BigInteger n = EB.getPaillierN();
 			BigInteger nSquared = n.pow(2);	
-			System.out.println("n2:"+nSquared);
+//			System.out.println("n2:"+nSquared);
 			BigInteger nicosInt = g.modPow(v, nSquared);
-			System.out.println("g^v mod n^2: "+nicosInt);
+//			System.out.println("g^v mod n^2: "+nicosInt);
 			nicosInt = nicosInt.multiply(vote.modPow(e.negate(), nSquared));
-			System.out.println("vote^e mod n^2: " + vote.modPow(e.negate(), nSquared));
+//			System.out.println("vote^e mod n^2: " + vote.modPow(e.negate(), nSquared));
 			nicosInt = nicosInt.mod(nSquared);
 			nicosInt = nicosInt.multiply(w.modPow(n, nSquared)).mod(nSquared);
-			System.out.println("w^n mod n^2:"+nicosInt);
+//			System.out.println("w^n mod n^2:"+nicosInt);
 			nicosInt = nicosInt.mod(nSquared);
 			
-			System.out.println("nicosInt: "+nicosInt);
-			System.out.println("u:        "+u);
+//			System.out.println("nicosInt: "+nicosInt);
+//			System.out.println("u:        "+u);
 	
 			answer = nicosInt.equals(u);	
-			System.out.println("first check: "+answer);
+//			System.out.println("first check: "+answer);
 			BigInteger left = u.modPow(l, nSquared).multiply(f.modPow(n, nSquared)).mod(nSquared);
 			BigInteger right = (a.multiply(d.modPow(e, nSquared))).mod(nSquared);
 			
-			System.out.println("left: "+left+", right: "+right);
+//			System.out.println("left: "+left+", right: "+right);
 			
-//			answer = g.modPow(l, nSquared).multiply(z.modPow(n, nSquared)).mod(nSquared) == (b.multiply(vote.modPow(e, nSquared))).mod(nSquared);
-			//System.out.println("second check: "+answer);
-			answer = u.modPow(l, nSquared).multiply(f.modPow(n, nSquared)).mod(nSquared).equals((a.multiply(d.modPow(e, nSquared))).mod(nSquared));
+//			answer = g.modPow(l, nSquared).multiply(z.modPow(n, nSquared)).mod(nSquared).equals((b.multiply(vote.modPow(e, nSquared))).mod(nSquared));
+//			System.out.println("second check: "+answer);
+			answer = left.equals(right);
 			System.out.println("third check: "+answer);
 			
 			if (answer == false)
@@ -165,7 +165,7 @@ public class BulletinBoard {
 				return false;
 			}
 	
-			System.out.println("nicosInt == u: " + answer);
+//			System.out.println("nicosInt == u: " + answer);
 			
 		}
 

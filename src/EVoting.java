@@ -165,10 +165,10 @@ public class EVoting
 	public static void displayElectionResults()
 	{
 		BigInteger encryptedResults = BB.tallyVotes(EB.getPaillierN());
-		BigInteger results = EB.decryptVotes(encryptedResults);
+		String tally = EB.decryptVotes(encryptedResults);
 		String display = "";
 		List<String> candidates = EB.getCandidates();
-		String tally = results.toString();
+//		String tally = results.toString();
 		System.out.println("tally: "+tally);
 		
 		// Create a char array and fill it with 0s to represent
