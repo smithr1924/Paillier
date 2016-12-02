@@ -141,7 +141,7 @@ public class EVoting
 		if (BB.receiveVote(voter))
 		{
 			voter.successfulVote();
-			dialog += "Thanks for voting "+voter.getName()+"!\n Have a nice day!"
+			dialog += "Thanks for voting "+voter.getName()+"!\n Have a nice day!";
 			JOptionPane.showMessageDialog(null, dialog);
 		}
 		
@@ -149,7 +149,8 @@ public class EVoting
 		{
 			dialog += "Sorry "+voter.getName()+", but there was a problem";
 			dialog += " with your vote!\n Please try again.";
-			JOptionPane.showMessageDialog(null, dialog, JOptionPane.WARNING_MESSAGE);
+			String warningType = "Error: Invalid Vote";
+			JOptionPane.showMessageDialog(null, dialog, warningType, JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
