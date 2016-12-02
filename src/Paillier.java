@@ -24,7 +24,7 @@ import java.util.*;
  * 
  * [2] Paillier cryptosystem from Wikipedia. 
  *    URL: <a href="http://en.wikipedia.org/wiki/Paillier_cryptosystem">http://en.wikipedia.org/wiki/Paillier_cryptosystem</a>
- * @author Kun Liu (kunliu1@cs.umbc.edu)
+ * 
  * @version 1.0
  */
 public class Paillier {
@@ -83,7 +83,6 @@ public class Paillier {
 	        nsquare = n.multiply(n);
 	        
 	        g = n.add(BigInteger.ONE);
-	//        g = new BigInteger("2");
 	        lambda = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE)).divide(
 	                p.subtract(BigInteger.ONE).gcd(q.subtract(BigInteger.ONE)));
         }
@@ -108,9 +107,17 @@ public class Paillier {
      */
     public BigInteger[] Encryption(BigInteger m) {
     	BigInteger[] answer = new BigInteger[2];
-        BigInteger r = new BigInteger(bitLength/2, new Random());
-        answer[0] = g.modPow(m, nsquare).multiply(r.modPow(n, nsquare)).mod(nsquare);
-        answer[1] = r;
+        BigInteger x;
+        do { 
+        	x = new BigInteger(bitLength/2, new Random());
+        } while (!(x.divide(x.gcd(n)).multiply(n).compareTo(BigInteger.ZERO) == 0));
+        
+        
+//        answer[0] = g.modPow(m, nsquare).multiply(x.modPow(n, nsquare)).mod(nsquare);
+//        answer[1] = x;
+        
+        answer[0] = new BigInteger("7");
+        answer[1] = new BigInteger("5");
         
         return answer;
     }

@@ -1,5 +1,4 @@
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class BulletinBoard {
@@ -23,7 +22,8 @@ public class BulletinBoard {
 	
 	public boolean receiveVote(Voter voter)
 	{
-		BigInteger signedVote = voter.getSignedVote();
+//		BigInteger signedVote = voter.getSignedVote();
+		BigInteger signedVote = new BigInteger("7");
 		BigInteger vote = voter.getPaillierVote();
 		
 		if (zkpSigned(voter, signedVote))
@@ -66,34 +66,40 @@ public class BulletinBoard {
 	// if we need it.
 	public Boolean zkpSigned(Voter voter, BigInteger vote)
 	{
-		BigInteger e = new BigInteger(2, new Random()).mod(EB.getPaillierN());
+		BigInteger e = new BigInteger("2");
+//		do {
+//			e = new BigInteger(2, new Random()).mod(EB.getPaillierN());
+//		} while (e == BigInteger.ZERO);
+		
 		BigInteger[] results = voter.zkpSigned(e);
 		System.out.println("here");
 		BigInteger u = results[0];
 		BigInteger v = results[1];
 		BigInteger w = results[2];
-		BigInteger g = EB.getE();
-		System.out.println("g: "+EB.getPaillierG()+" c: "+vote+" w: "+ w+" u: "+u);
+//		BigInteger g = EB.getE();
+		BigInteger g = new BigInteger("7");
+		System.out.println("v: "+v+" g: "+g+" c: "+vote+" u: "+u+" e: "+e);
 		System.out.println("here1");
 
-		BigInteger n = EB.getN();
+//		BigInteger n = EB.getN();
+		BigInteger n = new BigInteger("6");
 		BigInteger nSquared = n.pow(2);
 		
-		System.out.println("n2:"+nSquared);
+		System.out.println("n^2:            "+nSquared);
 
 		BigInteger nicosInt = g.modPow(v, nSquared);
-		System.out.println("g^v mod n^2: "+nicosInt);
-		nicosInt = nicosInt.multiply(vote.modPow(e.negate(), nSquared));
-		System.out.println("vote^e mod n^2: " + vote.modPow(e.negate(), nSquared));
+		System.out.println("g^v mod n^2:    "+nicosInt);
+		nicosInt = nicosInt.multiply(vote.modPow(e.negate(), nSquared)).mod(nSquared);
+		System.out.println("vote^e mod n^2: " + vote.modPow(e.negate(), nSquared).mod(nSquared));
 		nicosInt = nicosInt.mod(nSquared);
-		nicosInt = nicosInt.multiply(w.modPow(n, nSquared));
-		System.out.println("w^n mod n^2:"+nicosInt);
+		nicosInt = nicosInt.multiply(w.modPow(n, nSquared)).mod(nSquared);
+		System.out.println("w^n mod n^2:    "+w.modPow(n, nSquared).mod(nSquared));
 		nicosInt = nicosInt.mod(nSquared);
 
 		Boolean answer = nicosInt.equals(u);
 
-		System.out.println("u:    "+u);
-		System.out.println("newU: "+nicosInt);
+		System.out.println("u:              "+u);
+		System.out.println("newU:           "+nicosInt);
 		System.out.println("nicosInt == u: " + answer);
 
 		return answer;
@@ -104,13 +110,16 @@ public class BulletinBoard {
 	// if we need it.
 	public Boolean zkpPaillier(Voter voter, BigInteger vote)
 	{
-		BigInteger e = new BigInteger(2, new Random()).mod(EB.getPaillierN());
+		BigInteger e;
+		do {
+			e = new BigInteger(2, new Random()).mod(EB.getPaillierN());
+		} while (e == BigInteger.ZERO);
 		BigInteger[] results = voter.zkpPaillier(e);
 		BigInteger u = results[0];
 		BigInteger v = results[1];
 		BigInteger w = results[2];
 		BigInteger g = EB.getPaillierG();
-		System.out.println("g: "+g+" c: "+vote+" w: "+ w+" u: "+u+" vote: "+vote);
+		System.out.println("g: "+g+" c: "+vote+" u: "+u+" vote: "+vote+" w: "+ w);
 
 		BigInteger n = EB.getPaillierN();
 		BigInteger nSquared = n.pow(2);	
@@ -120,7 +129,7 @@ public class BulletinBoard {
 		nicosInt = nicosInt.multiply(vote.modPow(e.negate(), nSquared));
 		System.out.println("vote^e mod n^2: " + vote.modPow(e.negate(), nSquared));
 		nicosInt = nicosInt.mod(nSquared);
-		nicosInt = nicosInt.multiply(w.modPow(n, nSquared));
+		nicosInt = nicosInt.multiply(w.modPow(n, nSquared)).mod(nSquared);
 		System.out.println("w^n mod n^2:"+nicosInt);
 		nicosInt = nicosInt.mod(nSquared);
 		
