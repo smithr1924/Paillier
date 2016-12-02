@@ -7,10 +7,11 @@ Final group project for Cryptography and Network Security I. Implementing a voti
 Download and Execution Instructions:
 ------------------------------------
 
-To run the JAR file:
+To run the JAR file: (NOTE: votes will NOT tally correctly on macOS, so make sure to run this on Windows).
 
-1. Download the contents of the ```exec``` folder within this repo. Note: votes will NOT tally correctly on macOS, so make sure to run this on Windows.
-2. When prompted for a voter name, the list of legal voters specified in the ```voters.txt``` file are as follows: ```a a```, ```b c```, ```c c```, ```d d```, ```e e```, ```f f```. Log in with one of these users in order to vote.
+1. Download the contents of the ```exec``` folder within this repo.
+2. Run the JAR file in the same directory as the text files ```voters.txt``` and ```candidates.txt```. Note that accoriding to Professor Yener, these text files are not to be modified.
+3. When prompted for a voter name, the list of legal voters specified in the ```voters.txt``` file are as follows: ```a a```, ```b c```, ```c c```, ```d d```, ```e e```, ```f f```. Log in with one of these users in order to vote.
 
 To build from source:
 
