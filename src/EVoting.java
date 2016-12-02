@@ -174,14 +174,27 @@ public class EVoting
 		BigInteger results = EB.decryptVotes(encryptedResults);
 		String display = "";
 		List<String> candidates = EB.getCandidates();
-		String tally = "0"+results.toString();
+		String tally = results.toString();
 		System.out.println("tally: "+tally);
 		
-		for(int i = 0; i < tally.length(); i++)
-		{
-			// Order of tallies will be reversed, so candidate names must
-			// be displayed in reverse order.
-			display += candidates.get(tally.length()-1-i) + ": " + tally.charAt(i);
+		// for(int i = 0; i < tally.length(); i++)
+		// {
+		// 	// Order of tallies will be reversed, so candidate names must
+		// 	// be displayed in reverse order.
+		// 	display += candidates.get(tally.length()-1-i) + ": " + tally.charAt(i);
+		// 	display += "\n";
+		// }
+
+		String[] numVotes = new String[candidates.size()];
+		for(int i = 0; i < numVotes.size(); i++) {
+			numVotes[i] = "0";
+		}
+		for(int i = 0, j = candidates.size()-1; i < tally.length(); i++, j--) {
+			numVotes[j] = tally.charAt(i);
+		}
+
+		for(int i = 0; i < numVotes.size(); i++) {
+			display += candidates.get(i) + ": " + numVotes[i];
 			display += "\n";
 		}
 
