@@ -27,6 +27,9 @@ public class ElectionBoard {
 	private ElectionBoard() {		
 		candidates = new ArrayList<String>();
 		voters = new ArrayList<Voter>();
+
+		// Read in the voters from the text file and store
+		// them.
 		try {
 			File file = new File("voters.txt");
 			Scanner inFile = new Scanner(file);
@@ -57,6 +60,8 @@ public class ElectionBoard {
 			System.out.println("error reading in file 'voters.txt': " + e);
 		}
 		
+		// Read in the candidates from the text file and store
+		// them.
 		try {
 			File file = new File("candidates.txt");
 			Scanner inFile = new Scanner(file);

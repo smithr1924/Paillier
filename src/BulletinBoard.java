@@ -115,8 +115,11 @@ public class BulletinBoard {
 //	}
 	
 	// Zero Knowledge Proof function
-	// Don't even know if it will be necessary, but it's here
-	// if we need it.
+	// This function performs two ZKP checks. The first one checks the
+	// encrypted vote (as per the PDF posted on Piazza) and ensures that
+	// the voter still knows the content of their vote. The second checks
+	// the blind-signed vote provided by the user to ensure that the
+	// signature is legitimate.
 	public Boolean zkpPaillier(Voter voter)
 	{
 		Boolean answer;
