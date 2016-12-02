@@ -11,7 +11,7 @@ To run the JAR file: (NOTE: votes will NOT tally correctly on macOS, so make sur
 
 1. Download the contents of the ```exec``` folder within this repo.
 2. Run the JAR file in the same directory as the text files ```voters.txt``` and ```candidates.txt```. Note that accoriding to Professor Yener, these text files are not to be modified.
-3. When prompted for a voter name, the list of legal voters specified in the ```voters.txt``` file are as follows: ```a a```, ```b c```, ```c c```, ```d d```, ```e e```, ```f f```. Log in with one of these users in order to vote.
+3. When prompted for a voter name, the list of legal voters specified in the ```voters.txt``` file are as follows: ```a a```, ```b b```, ```c c```, ```d d```, ```e e```, ```f f```. Log in with one of these users in order to vote.
 
 To build from source:
 
