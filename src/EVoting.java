@@ -68,9 +68,12 @@ public class EVoting
 	public static int startMenu()
 	{
 		String[] menu = {"Login and vote", "End the poll", "Exit"};
+		// int input = (JOptionPane.showOptionDialog(null, 
+		// 	"What would you like to do?", "Print",
+		// 	0, 3, null, menu, null));
 		int input = (JOptionPane.showOptionDialog(null, 
 			"What would you like to do?", "Print",
-			0, 3, null, menu, null));
+			0, JOptionPane.PLAIN_MESSAGE, null, menu, null));
 		return input;
 	}
 
