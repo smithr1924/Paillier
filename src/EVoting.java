@@ -112,6 +112,12 @@ public class EVoting
 					vote(thisVoter, candidates);
 				}
 			}
+			else {
+				String dialog = "Voter does not exist!";
+					String title = "Error";
+					JOptionPane.showMessageDialog(null, dialog, title,
+												  JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
 
