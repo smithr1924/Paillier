@@ -83,13 +83,12 @@ public class ElectionBoard {
         n = p.multiply(q);
         BigInteger phiN = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 
-//        e = phiN.subtract(BigInteger.ONE);
         do {
         	e = new BigInteger(12, 64, new Random());
         } while (e.compareTo(phiN) >= 0);
         d = e.modInverse(phiN);
         
-        System.out.println("e: "+e+", d: "+d);
+        System.out.println("e: "+e+", d: "+d+" n: "+n);
 	}
 	
 	public boolean isPrime(int n) {
@@ -150,7 +149,9 @@ public class ElectionBoard {
 	public BigInteger receiveVote(Voter voter)
 	{
 		BigInteger vote = voter.getRSAVote();
-		BigInteger answer = vote.pow(d.intValue());
+		System.out.println("rsa: "+vote);
+		BigInteger answer = vote.modPow(d, n);
+		System.out.println("answer: "+answer);
 		
 		return answer;
 	}

@@ -86,7 +86,7 @@ public class Voter
 		if (!didVote)
 		{
 			clearVote = vote;
-			BigInteger[] encrypted = EB.encryptVote(vote);
+			BigInteger[] encrypted = EB.encryptVote(clearVote);
 			paillierVote = encrypted[0];
 			x = encrypted[1];
 			
@@ -94,8 +94,20 @@ public class Voter
 			BigInteger n = EB.getN();
 
 			
-			r = new BigInteger(512, new Random());
-			rsaEncryptedVote = vote.multiply(r.pow(e.intValue())).mod(n);
+			do {
+				r = new BigInteger(8, new Random());
+				System.out.println("asdkfjadsklfj r: "+r);
+			} while(r.divide(r.gcd(n)).multiply(n).compareTo(BigInteger.ONE) == 0);
+			
+			rsaEncryptedVote = clearVote.multiply(r.pow(e.intValue())).mod(n);
+			
+			System.out.println("rsa: "+rsaEncryptedVote);
+			
+			// MOVE DAT SHIT HERE
+//			(signedVote == null)
+//			{
+//				signedVote = vote.divide(r);
+//			}
 		}
 		
 		else
@@ -106,9 +118,13 @@ public class Voter
 	
 	public void receiveSignature(BigInteger vote)
 	{
+//		for (int i = 0; i < 1000; i++)
+		System.out.println("Received: "+vote);
 		if (signedVote == null)
 		{
-			signedVote = vote;
+			System.out.println("rec sig r: "+r);
+			signedVote = vote.multiply(r.modInverse(n));
+			System.out.println("rec sig signed: "+signedVote);
 		}
 	}
 	
@@ -117,16 +133,17 @@ public class Voter
 		BigInteger[] answer = new BigInteger[3];
 		// BigInteger s = new BigInteger(8, new Random()).mod(n);
 		// s must be coprime to n
-//		BigInteger x = this.r;
-		BigInteger x = new BigInteger("5");
-//		BigInteger s = r.modPow(n, n.pow(2));
-		BigInteger s = new BigInteger("4");
-//		BigInteger r = new BigInteger(8, new Random()).mod(n);
-		BigInteger r = new BigInteger("1");
-//		BigInteger g = ElectionBoard.getInstance().getE();
-		BigInteger g = new BigInteger("7");
-//		BigInteger n = ElectionBoard.getInstance().getN();
-		BigInteger n = new BigInteger("6");
+		BigInteger x = this.r;
+//		BigInteger x = new BigInteger("5");
+		System.out.println("x: "+x);
+		BigInteger s = r.modPow(n, n.pow(2));
+//		BigInteger s = new BigInteger("4");
+		BigInteger r = new BigInteger(8, new Random()).mod(n);
+//		BigInteger r = new BigInteger("1");
+		BigInteger g = ElectionBoard.getInstance().getE();
+//		BigInteger g = new BigInteger("7");
+		BigInteger n = ElectionBoard.getInstance().getN();
+//		BigInteger n = new BigInteger("6");
 		
 		answer[0] = g.modPow(r, n.pow(2)).multiply(s.modPow(n, n.pow(2)));
 		answer[0] = answer[0].mod(n.pow(2));

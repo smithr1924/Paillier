@@ -120,6 +120,7 @@ public class EVoting
 	public static void vote(Voter voter, String[] candidates)
 	{
 		int vote = candidateMenu(candidates);
+		vote++;
 
 		vote = (int)(Math.pow(10.0, (double)vote));
 
@@ -136,7 +137,7 @@ public class EVoting
 		voter.didVote(new BigInteger(tmp), EB);
         BigInteger signedVote = EB.receiveVote(voter);
         voter.receiveSignature(signedVote);
-        System.out.println("signed: ");
+        System.out.println("signed: "+signedVote);
         sendVoteToBB(voter);
 	}
 
@@ -179,7 +180,7 @@ public class EVoting
 
 		// Order of tallies are are the reverse of the order of the names
 		// on the buttons. Fill out the array with the correct tallies.
-		for(int i = 0, j = candidates.size()-1; i < tally.length(); i++, j--) {
+		for(int i = 0, j = candidates.size()-1; i < tally.length()-1; i++, j--) {
 			numVotes[j] = tally.charAt(i);
 		}
 

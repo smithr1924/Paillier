@@ -22,15 +22,14 @@ public class BulletinBoard {
 	
 	public boolean receiveVote(Voter voter)
 	{
-//		BigInteger signedVote = voter.getSignedVote();
-		BigInteger signedVote = new BigInteger("7");
-		BigInteger vote = voter.getPaillierVote();
+//		for(int i = 0; i < 10000000; i++)
+//		System.out.println("THE VOTER'S SIGNED VOTE: "+ signedVote);
 		
-		if (zkpSigned(voter, signedVote))
-		{
-			if (zkpPaillier(voter, vote))
+		//if (zkpSigned(voter))
+		//{
+			if (zkpPaillier(voter))
 			{
-				matrix[voter.getID()] = vote;
+				matrix[voter.getID()] = voter.getPaillierVote();
 				System.out.println("woop");
 				return true;
 			}
@@ -40,13 +39,13 @@ public class BulletinBoard {
 				System.out.println("Paillier encrypted vote did not pass the ZKP! Vote rejected.");
 				return false;
 			}
-		}
+		//}
 		
-		else
-		{
-			System.out.println("Signed vote did not pass the ZKP! Vote rejected.");
-			return false;
-		}
+//		else
+//		{
+//			System.out.println("Signed vote did not pass the ZKP! Vote rejected.");
+//			return false;
+//		}
 	}
 	
 	public BigInteger tallyVotes(BigInteger n)
@@ -64,25 +63,26 @@ public class BulletinBoard {
 	// Zero Knowledge Proof function
 	// Don't even know if it will be necessary, but it's here
 	// if we need it.
-	public Boolean zkpSigned(Voter voter, BigInteger vote)
+	public Boolean zkpSigned(Voter voter)
 	{
-		BigInteger e = new BigInteger("2");
-//		do {
-//			e = new BigInteger(2, new Random()).mod(EB.getPaillierN());
-//		} while (e == BigInteger.ZERO);
+		BigInteger vote = voter.getSignedVote();
+		BigInteger e;
+		do {
+			e = new BigInteger(2, new Random()).mod(EB.getPaillierN());
+		} while (e == BigInteger.ZERO);
 		
 		BigInteger[] results = voter.zkpSigned(e);
-		System.out.println("here");
+		System.out.println("vote: "+vote);
 		BigInteger u = results[0];
 		BigInteger v = results[1];
 		BigInteger w = results[2];
-//		BigInteger g = EB.getE();
-		BigInteger g = new BigInteger("7");
+		BigInteger g = EB.getE();
+//		BigInteger g = new BigInteger("7");
 		System.out.println("v: "+v+" g: "+g+" c: "+vote+" u: "+u+" e: "+e);
 		System.out.println("here1");
 
-//		BigInteger n = EB.getN();
-		BigInteger n = new BigInteger("6");
+		BigInteger n = EB.getN();
+//		BigInteger n = new BigInteger("6");
 		BigInteger nSquared = n.pow(2);
 		
 		System.out.println("n^2:            "+nSquared);
@@ -108,8 +108,9 @@ public class BulletinBoard {
 	// Zero Knowledge Proof function
 	// Don't even know if it will be necessary, but it's here
 	// if we need it.
-	public Boolean zkpPaillier(Voter voter, BigInteger vote)
+	public Boolean zkpPaillier(Voter voter)
 	{
+		BigInteger vote = voter.getPaillierVote();
 		BigInteger e;
 		do {
 			e = new BigInteger(2, new Random()).mod(EB.getPaillierN());

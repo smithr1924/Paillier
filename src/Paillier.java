@@ -110,14 +110,14 @@ public class Paillier {
         BigInteger x;
         do { 
         	x = new BigInteger(bitLength/2, new Random());
-        } while (!(x.divide(x.gcd(n)).multiply(n).compareTo(BigInteger.ZERO) == 0));
+        } while (x.divide(x.gcd(n)).multiply(n).compareTo(BigInteger.ONE) == 0);
         
         
-//        answer[0] = g.modPow(m, nsquare).multiply(x.modPow(n, nsquare)).mod(nsquare);
-//        answer[1] = x;
+        answer[0] = g.modPow(m, nsquare).multiply(x.modPow(n, nsquare)).mod(nsquare);
+        answer[1] = x;
         
-        answer[0] = new BigInteger("7");
-        answer[1] = new BigInteger("5");
+//        answer[0] = new BigInteger("7");
+//        answer[1] = new BigInteger("5");
         
         return answer;
     }
