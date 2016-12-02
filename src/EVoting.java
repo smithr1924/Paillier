@@ -135,9 +135,9 @@ public class EVoting
 	{
 		String tmp = "" + vote;
 		voter.didVote(new BigInteger(tmp), EB);
-        BigInteger signedVote = EB.receiveVote(voter);
-        voter.receiveSignature(signedVote);
-        System.out.println("signed: "+signedVote);
+//        BigInteger signedVote = EB.receiveVote(voter);
+//        voter.receiveSignature(signedVote);
+//        System.out.println("signed: "+signedVote);
         sendVoteToBB(voter);
 	}
 

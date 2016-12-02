@@ -1,5 +1,9 @@
+import java.io.File;
 import java.math.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Voter
 {
@@ -38,12 +42,44 @@ public class Voter
 //		}
 //		EB = ElectionBoard.getInstance();
 //		BB = BulletinBoard.getInstance();
+
+		List<String> voters = new ArrayList<String>();
 		
-		this.name = name;;
-		this.n = n;
-		this.g = g;
-		id = numVoters;
-		numVoters++;
+		try {
+			File file = new File("voters.txt");
+			Scanner inFile = new Scanner(file);
+
+			String line;
+			String[] data;
+			
+			while(inFile.hasNext())
+			{
+				line = inFile.nextLine();	
+				data = line.split(" ");
+				String newName = data[0] + " " + data[1];
+				
+				voters.add(newName);
+				System.out.println(newName);
+			}
+			
+			inFile.close();			
+		} catch (Exception e) {
+			System.out.println("error reading in file 'voters.txt': " + e);
+		}
+		
+		if (voters.contains(name))
+		{
+			this.name = name;
+			this.n = n;
+			this.g = g;
+			id = numVoters;
+			numVoters++;
+		}
+		
+		else
+		{
+			throw new IllegalArgumentException(name+" is not a verified voter!");
+		}
 	}
 
 	public String getName()
@@ -101,30 +137,15 @@ public class Voter
 			
 			rsaEncryptedVote = clearVote.multiply(r.pow(e.intValue())).mod(n);
 			
-			System.out.println("rsa: "+rsaEncryptedVote);
+			signedVote = EB.receiveVote(this);
 			
-			// MOVE DAT SHIT HERE
-//			(signedVote == null)
-//			{
-//				signedVote = vote.divide(r);
-//			}
+	        System.out.println("signed: "+signedVote);		
+			System.out.println("rsa: "+rsaEncryptedVote);
 		}
 		
 		else
 		{
 			System.out.println("User "+name+" has already voted");
-		}
-	}
-	
-	public void receiveSignature(BigInteger vote)
-	{
-//		for (int i = 0; i < 1000; i++)
-		System.out.println("Received: "+vote);
-		if (signedVote == null)
-		{
-			System.out.println("rec sig r: "+r);
-			signedVote = vote.multiply(r.modInverse(n));
-			System.out.println("rec sig signed: "+signedVote);
 		}
 	}
 	
