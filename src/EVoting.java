@@ -96,6 +96,12 @@ public class EVoting
 				{
 					// Bounce the user back if they've already voted
 					System.out.println("User "+thisVoter.getName()+" already voted");
+
+					String dialog = "You have already voted!";
+					String title = "Error: Invalid Vote";
+					JOptionPane.showMessageDialog(null, dialog, title,
+												  JOptionPane.WARNING_MESSAGE);
+
 					return;
 				}
 				
